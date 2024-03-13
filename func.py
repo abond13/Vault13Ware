@@ -60,7 +60,7 @@ def hello():
     print("How can I help you?") #################### наповнити змістом #######################
 
 @input_error
-def add_man(argums):
+def add_man(argums: tuple):
     '''
     Функція додавання контакту
     '''
