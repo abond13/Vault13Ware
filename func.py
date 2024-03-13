@@ -74,6 +74,7 @@ def add_man(args: tuple):
         record = Record(name)
         AddressBook.add_record(record)
         print(f"Contact {name} added.")
+        return
     print(f"Contact {name} is exist already. Nothing is added.")
 
 @input_error
