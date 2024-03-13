@@ -1,6 +1,6 @@
 
 from contextlib import contextmanager
-from classes import NameFormatError, PhoneFormatError, BirthdayFormatError, EmailFormatError, Name, Phone, Address, Birthday, Record, AddressBook
+from classes import AddressFormatError, NameFormatError, PhoneFormatError, BirthdayFormatError, EmailFormatError, Name, Phone, Address, Birthday, Record, AddressBook
 
 @contextmanager
 def catch_my_exceptions(*exceptions):
@@ -14,6 +14,8 @@ def catch_my_exceptions(*exceptions):
         print("Wrong b-day")
     except EmailFormatError:
         print("Wrong email")
+    except AddressFormatError:
+        print("Wrong address")
 
 def input_error(func):
     '''
@@ -35,6 +37,8 @@ def input_error(func):
         except BirthdayFormatError:
             return "Wrong birthday format."
         except EmailFormatError:
+            return "Wrong email format."
+        except AddressFormatError:
             return "Wrong email format."
     return inner
 

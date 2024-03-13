@@ -20,6 +20,9 @@ class BirthdayFormatError(Exception):
 class EmailFormatError(Exception):
     pass
 
+class AddressFormatError(Exception):
+    pass
+
 
 class Field:
     """
@@ -71,7 +74,7 @@ class Email(Field):
     """
     def __init__(self, email):
         if not re.fullmatch(r".+@.+\..+", email):
-            raise PhoneFormatError
+            raise EmailFormatError
         super().__init__(email)
 
 class Address(Field):
