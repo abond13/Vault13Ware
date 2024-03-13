@@ -64,6 +64,10 @@ def add_man(argums: tuple):
     '''
     Функція додавання контакту
     '''
+    if len(argums) == 0:
+        print("Name isn't entered. Please enter or get help (command 'Help').")
+        return
+
     name = argums[0]
     record = AddressBook.find(name)
     if not record:
