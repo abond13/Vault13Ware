@@ -212,8 +212,6 @@ class AddressBook(UserDict):
     def __str__(self):
         return 'Address book:\n\t' + '\n\t'.join(record.__str__() for record in self.data.values())
 
-
-
 class NoteBook():
     pass
 

@@ -1,6 +1,6 @@
 
 from contextlib import contextmanager
-from classes import NameFormatError, PhoneFormatError, BirthdayFormatError, EmailFormatError, Field, Name, Phone, Birthday, Record, AddressBook
+from classes import NameFormatError, PhoneFormatError, BirthdayFormatError, EmailFormatError, Name, Phone, Address, Birthday, Record, AddressBook
 
 @contextmanager
 def catch_my_exceptions(*exceptions):
@@ -64,7 +64,13 @@ def add_man(argums):
     '''
     Функція додавання контакту
     '''
-    pass #################### наповнити кодом #######################
+    name = argums[0]
+    record = AddressBook.find(name)
+    if not record:
+        record = Record(name)
+        AddressBook.add_record(record)
+        return "Contact added."
+    return "[ERROR] Expected command: add <name>"
 
 @input_error
 def del_man(argums):
