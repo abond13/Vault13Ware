@@ -44,8 +44,8 @@ def parse_input(user_input: str):
     '''
     cmd_string, *args = user_input.split()
     cmd_string = cmd_string.strip().lower()
-    argums_tuple = (*args,)
-    return cmd_string, argums_tuple
+    args_tuple = (*args,)
+    return cmd_string, args_tuple
 
 def help():
     '''
@@ -60,15 +60,15 @@ def hello():
     print("How can I help you?") #################### наповнити змістом #######################
 
 @input_error
-def add_man(argums: tuple):
+def add_man(args: tuple):
     '''
     Функція додавання контакту
     '''
-    if len(argums) == 0:
+    if len(args) == 0:
         print("Name isn't entered. Please enter or get help (command 'Help').")
         return
 
-    name = argums[0]
+    name = args[0]
     record = AddressBook.find(name)
     if not record:
         record = Record(name)
@@ -77,126 +77,126 @@ def add_man(argums: tuple):
     print(f"Contact {name} is exist already. Nothing is added.")
 
 @input_error
-def del_man(argums):
+def del_man(args):
     '''
     Функція видалення контакту
     '''
     pass #################### наповнити кодом #######################
 
 @input_error
-def cng_man(argums):
+def cng_man(args):
     '''
     Функція зміни/оновлення контакту
     '''
     pass #################### наповнити кодом #######################
 
 @input_error
-def show_man(argums):
+def show_man(args):
     '''
     Функція показу даних контакту
     '''
     pass #################### наповнити кодом #######################
 
 @input_error
-def find_man(argums):
+def find_man(args):
     '''
     Функція пошуку контакту
     '''
     pass #################### наповнити кодом #######################
 
 @input_error
-def add_phone(argums):
+def add_phone(args):
     '''
     Функція додавання номеру(-ів) телефону(-ів)
     '''
     pass #################### наповнити кодом #######################
 
 @input_error
-def cng_phone(argums):
+def cng_phone(args):
     '''
     Функція зміни номеру телефону
     '''
     pass  #################### наповнити кодом #######################
 
 @input_error
-def del_phone(argums):
+def del_phone(args):
     '''
     Функція зміни номеру телефону
     '''
     pass  #################### наповнити кодом #######################
 
 @input_error
-def add_email(argums):
+def add_email(args):
     '''
     Функція додавання email
     '''
     pass  #################### наповнити кодом #######################
 
 @input_error
-def cng_email(argums):
+def cng_email(args):
     '''
     Функція додавання email
     '''
     pass  #################### наповнити кодом #######################
 
 @input_error
-def find_email(argums):
+def find_email(args):
     '''
     Функція пошуку email
     '''
     pass  #################### наповнити кодом #######################
 
 @input_error
-def del_email(argums):
+def del_email(args):
     '''
     Функція видаленя email
     '''
     pass  #################### наповнити кодом #######################
 
 @input_error
-def add_bday(argums):
+def add_bday(args):
     '''
     Функція додавання дня народження
     '''
     pass  #################### наповнити кодом #######################
 
 @input_error
-def cng_bday(argums):
+def cng_bday(args):
     '''
     Функція додавання дня народження
     '''
     pass  #################### наповнити кодом #######################
 
 @input_error
-def del_bday(argums):
+def del_bday(args):
     '''
     Функція видалення дня народження
     '''
     pass  #################### наповнити кодом #######################
 
 @input_error
-def show_bday(argums):
+def show_bday(args):
     '''
     Функція видалення дня народження
     '''
     pass  #################### наповнити кодом #######################
 
 @input_error
-def add_adr(argums):
+def add_adr(args):
     '''
     Функція додавання адреси
     '''
     pass  #################### наповнити кодом #######################
 
 @input_error
-def del_adr(argums):
+def del_adr(args):
     '''
     Функція видалення адреси
     '''
     pass  #################### наповнити кодом #######################
 
 @input_error
-def find_adr(argums):
+def find_adr(args):
     '''
     Функція пошуку адреси
     '''
@@ -204,28 +204,28 @@ def find_adr(argums):
 
 
 @input_error
-def add_note(argums):
+def add_note(args):
     '''
     Функція додавання нотатки
     '''
     pass  #################### наповнити кодом #######################
 
 @input_error
-def del_note(argums):
+def del_note(args):
     '''
     Функція додавання нотатки
     '''
     pass  #################### наповнити кодом #######################
 
 @input_error
-def find_note(argums):
+def find_note(args):
     '''
     Функція додавання нотатки
     '''
     pass  #################### наповнити кодом #######################
 
 @input_error
-def show_note(argums):
+def show_note(args):
     '''
     Функція додавання нотатки
     '''
