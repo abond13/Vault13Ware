@@ -110,7 +110,7 @@ class Record:
             if record.value == phone:
                 return record
         return None
-
+         
     def add_birthday(self, birthday):
         # Quick naїve check of date format
         if not re.fullmatch("[0-9]{2}\\.[0-9]{2}\\.[0-9]{4}", birthday):
