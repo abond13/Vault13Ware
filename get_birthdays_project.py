@@ -17,12 +17,6 @@ class DictSortable(UserDict):
             sorted_dict[key] = self.data[key]
         return sorted_dict
 
-# def date_to_MMYY(date: datetime.date) -> str:
-#     """
-#     Just converts a date to a readable string: datetime(2024, 3, 1) -> 'March, 2024'
-#     """
-#     return f"{date.strftime("%B, %Y")}"
-
 def get_days(today: datetime.date, quantity: int) -> datetime.date:
     """
     Generator of dates within some amount days from today
@@ -93,7 +87,7 @@ if __name__ == "__main__":
     book = AddressBook()
     
     michael = Record("Michael")
-    michael.add_birthday("15.03.2016")
+    michael.add_birthday("13.03.2016")
     book.add_record(michael)
     
     jane = Record("Jane")
@@ -112,6 +106,12 @@ if __name__ == "__main__":
     stasy.add_birthday("10.04.2016")
     book.add_record(stasy)
 
-    get_birthdays(book, 30)
+    melissa = Record("Melissa")
+    melissa.add_birthday("20.03.2016")
+    book.add_record(melissa)
 
-    
+    angela = Record("Angela")
+    angela.add_birthday("19.03.2016")
+    book.add_record(angela)
+
+    get_birthdays(book, 500)    
