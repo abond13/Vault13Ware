@@ -69,8 +69,8 @@ def add_man(argums: tuple):
     if not record:
         record = Record(name)
         AddressBook.add_record(record)
-        print("Contact added.")
-    print("[ERROR] Expected command: add <name>")
+        print(f"Contact {name} added.")
+    print(f"Contact {name} is exist already. Nothing is added.")
 
 @input_error
 def del_man(argums):
