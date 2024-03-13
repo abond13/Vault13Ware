@@ -114,4 +114,6 @@ if __name__ == "__main__":
     angela.add_birthday("19.03.2016")
     book.add_record(angela)
 
-    get_birthdays(book, 500)    
+    get_birthdays(book, 500)
+    
+    # print("Just some change to check .gitignore")
