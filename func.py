@@ -1,21 +1,6 @@
 
-from contextlib import contextmanager
-from classes import AddressFormatError, NameFormatError, PhoneFormatError, BirthdayFormatError, EmailFormatError, Name, Phone, Address, Birthday, Record, AddressBook
-
-@contextmanager
-def catch_my_exceptions(*exceptions):
-    try:
-        yield
-    except NameFormatError:
-        print("Wrong name")
-    except PhoneFormatError:
-        print("Wrong phone")
-    except BirthdayFormatError:
-        print("Wrong b-day")
-    except EmailFormatError:
-        print("Wrong email")
-    except AddressFormatError:
-        print("Wrong address")
+from classes import NameFormatError, PhoneFormatError, BirthdayFormatError, EmailFormatError, AddressFormatError
+from classes import Name, Phone, Address, Birthday, Record, AddressBook
 
 def input_error(func):
     '''
@@ -55,13 +40,13 @@ def help():
     '''
     Друк сторінки з синтаксисом команд
     '''
-    print("Usage:")    #################### наповнити змістом #######################
+    print("Usage:")    # FIXME наповнити змістом #######################
 
 def hello():
     '''
     Друк сторінки з привітанням
     '''
-    print("How can I help you?") #################### наповнити змістом #######################
+    print("How can I help you?") # FIXME наповнити змістом #######################
 
 @input_error
 def add_man(args: tuple):
@@ -86,126 +71,126 @@ def del_man(args):
     '''
     Функція видалення контакту
     '''
-    pass #################### наповнити кодом #######################
+    pass # FIXME наповнити кодом #######################
 
 @input_error
 def cng_man(args):
     '''
     Функція зміни/оновлення контакту
     '''
-    pass #################### наповнити кодом #######################
+    pass # FIXME наповнити кодом #######################
 
 @input_error
 def show_man(args):
     '''
     Функція показу даних контакту
     '''
-    pass #################### наповнити кодом #######################
+    pass # FIXME наповнити кодом #######################
 
 @input_error
 def find_man(args):
     '''
     Функція пошуку контакту
     '''
-    pass #################### наповнити кодом #######################
+    pass # FIXME наповнити кодом #######################
 
 @input_error
 def add_phone(args):
     '''
     Функція додавання номеру(-ів) телефону(-ів)
     '''
-    pass #################### наповнити кодом #######################
+    pass # FIXME наповнити кодом #######################
 
 @input_error
 def cng_phone(args):
     '''
     Функція зміни номеру телефону
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # FIXME наповнити кодом #######################
 
 @input_error
 def del_phone(args):
     '''
     Функція зміни номеру телефону
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # FIXME наповнити кодом #######################
 
 @input_error
 def add_email(args):
     '''
     Функція додавання email
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # FIXME наповнити кодом #######################
 
 @input_error
 def cng_email(args):
     '''
     Функція додавання email
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # FIXME наповнити кодом #######################
 
 @input_error
 def find_email(args):
     '''
     Функція пошуку email
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # FIXME наповнити кодом #######################
 
 @input_error
 def del_email(args):
     '''
     Функція видаленя email
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # FIXME наповнити кодом #######################
 
 @input_error
 def add_bday(args):
     '''
     Функція додавання дня народження
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # FIXME наповнити кодом #######################
 
 @input_error
 def cng_bday(args):
     '''
     Функція додавання дня народження
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # FIXME наповнити кодом #######################
 
 @input_error
 def del_bday(args):
     '''
     Функція видалення дня народження
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # FIXME наповнити кодом #######################
 
 @input_error
 def show_bday(args):
     '''
     Функція видалення дня народження
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # FIXME наповнити кодом #######################
 
 @input_error
 def add_adr(args):
     '''
     Функція додавання адреси
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # FIXME наповнити кодом #######################
 
 @input_error
 def del_adr(args):
     '''
     Функція видалення адреси
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # FIXME наповнити кодом #######################
 
 @input_error
 def find_adr(args):
     '''
     Функція пошуку адреси
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # FIXME наповнити кодом #######################
 
 
 @input_error
@@ -213,26 +198,26 @@ def add_note(args):
     '''
     Функція додавання нотатки
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # FIXME наповнити кодом #######################
 
 @input_error
 def del_note(args):
     '''
     Функція додавання нотатки
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # FIXME наповнити кодом #######################
 
 @input_error
 def find_note(args):
     '''
     Функція додавання нотатки
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # TODO наповнити кодом #######################
 
 @input_error
 def show_note(args):
     '''
     Функція додавання нотатки
     '''
-    pass  #################### наповнити кодом #######################
+    pass  # TODO наповнити кодом #######################
 

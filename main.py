@@ -1,5 +1,5 @@
 from classes import AddressBook, NoteBook # модуль з класами
-import func # модуль з функціями базового функціоналу
+import func # модуль з функціями виконання команд боту
 import features # модуль з фічами
 
 
@@ -27,8 +27,6 @@ def main():
 
         # handling
         if command in ("close", "exit", "quit"):
-            book.save()
-            notes.save()
             features.goodbye()
             break
 
@@ -109,5 +107,6 @@ def main():
 
         else:
             print("Invalid command. Type 'help' for get a list of commands.")
+
 if __name__ == "__main__":
     main()
