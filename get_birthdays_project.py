@@ -17,24 +17,21 @@ class DictSortable(UserDict):
             sorted_dict[key] = self.data[key]
         return sorted_dict
 
-def date_to_MMYY(date: datetime.date) -> str:
-    """
-    Just converts a date to a readable string: datetime(2024, 3, 1) -> 'March, 2024'
-    """
-    months = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June",
-                7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December",}
-    return f"{months[date.month]}, {date.year}"
+# def date_to_MMYY(date: datetime.date) -> str:
+#     """
+#     Just converts a date to a readable string: datetime(2024, 3, 1) -> 'March, 2024'
+#     """
+#     return f"{date.strftime("%B, %Y")}"
 
-def get_days(today: datetime.date, quantity: int) -> list[datetime.date]:
+def get_days(today: datetime.date, quantity: int) -> datetime.date:
     """
-    Returns a list of dates within some amount days from today
+    Generator of dates within some amount days from today
     """
-    one_day = timedelta(days=1)
-    day_list = []
-    for _ in range(quantity):
-        day_list.append(today)
-        today += one_day
-    return day_list
+    count = 0
+    while count < quantity:
+        yield today
+        today += timedelta(days=1)
+        count += 1
 
 def get_birthdays(records: AddressBook, quantity: int):
     """
@@ -43,7 +40,6 @@ def get_birthdays(records: AddressBook, quantity: int):
     Returns nothing.
     """
     today = datetime.today().date()
-    day_list = get_days(today, quantity)
     calendar = {}
     
     # Going to work with the next structure: (dict of dicts)
@@ -56,7 +52,7 @@ def get_birthdays(records: AddressBook, quantity: int):
     for record in records.values():
         birthday_date = record.birthday
         name = record.name
-        for day in day_list:    
+        for day in get_days(today, quantity):    
             if (birthday_date.month, birthday_date.day) == (day.month, day.day):
             
                 # set keys for the outer and inner dictionaries
@@ -86,7 +82,7 @@ def get_birthdays(records: AddressBook, quantity: int):
     for key_outer, inner_dict in calendar.items():
         inner_dict = DictSortable(inner_dict)
         inner_dict = inner_dict.sort_keys()
-        print(date_to_MMYY(key_outer))
+        print(key_outer.strftime("%B, %Y"))
         for key_inner, name_list in inner_dict.items():
             print(f"{key_inner}: {", ".join([name.value for name in name_list])}")
         print()
