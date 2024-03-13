@@ -1,27 +1,29 @@
-"""
-    AddressBook
-"""
-
 import re
 import datetime
 from collections import UserDict
 from collections import defaultdict
-from contextlib import contextmanager
 
-### Exceptions
+
+# Exceptions
 class NameFormatError(Exception):
     pass
+
 
 class PhoneFormatError(Exception):
     pass
 
+
 class BirthdayFormatError(Exception):
     pass
+
 
 class EmailFormatError(Exception):
     pass
 
-### Classes
+class AddressFormatError(Exception):
+    pass
+
+
 class Field:
     """
     Базовий клас для полів запису.
@@ -57,7 +59,7 @@ class Phone(Field):
             raise PhoneFormatError
         super().__init__(phone)
 
-class Birthday(datetime.date):
+class Birthday(datetime.date): # Why not Field? #######################
     """
     Клас для зберігання дня народження.
     Формат виводу: DD.MM.YYYY
@@ -65,14 +67,37 @@ class Birthday(datetime.date):
     def __str__(self):
         return f"{self.day:02}.{self.month:02}.{self.year:04}"
 
+class Email(Field):
+    """
+    Клас для зберігання email.
+    Email має задоволняти формату login@subdomen.domen:
+    """
+    def __init__(self, email):
+        if not re.fullmatch(r".+@.+\..+", email):
+            raise EmailFormatError
+        super().__init__(email)
+
+class Address(Field):
+    """
+    Клас для зберігання адреси контакту.
+    Імʼя має задоволняти наступним вимогам:
+            1. Довжина повинна бути 2+ символів.
+    """
+    def __init__(self, name):
+        if not re.fullmatch(r"^.{3,}", name):
+            raise NameFormatError
+        super().__init__(name)
+
 class Record:
     """
     Клас для зберігання інформації про контакт,
-    включаючи ім'я та список телефонів.
+    включаючи ім'я, список телефонів, список Emails, адресу, день народження
     """
     def __init__(self, name):
         self.name = Name(name)
         self.phones = []
+        self.emails = []
+        self.address = None
         self.birthday = None
 
     def add_phone(self, phone):
@@ -90,9 +115,9 @@ class Record:
         return False
 
     def edit_phone(self, old_phone, new_phone):
-        # Якщо старий телефон існує, і якщо ми успішно додали новий
+        # Якщо старий телефон існує, і якщо ми успішно додали новий, та якщо старий та новий не співпадають
         # телефон, то тоді видаляємо старий
-        if self.find_phone(old_phone) and self.add_phone(new_phone):
+        if self.find_phone(old_phone) and self.add_phone(new_phone) and (self.find_phone(old_phone) != self.add_phone(new_phone)):
             self.remove_phone(old_phone)
             return True
         return False
@@ -113,7 +138,7 @@ class Record:
          
     def add_birthday(self, birthday):
         # Quick naїve check of date format
-        if not re.fullmatch("[0-9]{2}\\.[0-9]{2}\\.[0-9]{4}", birthday):
+        if not re.fullmatch(r'\b(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.(19\d\d|20\d\d)\b', birthday):
             raise BirthdayFormatError
         day, month, year = birthday.split('.')
         # Strong check by creating a date object
@@ -121,11 +146,13 @@ class Record:
             self.birthday = Birthday(day=int(day), month=int(month), year=int(year))
         except ValueError as exception:
             raise BirthdayFormatError from exception
-
     def __str__(self):
-        return (f"Contact name: {self.name.value}, "
-                f"phones: {'; '.join(p.value for p in self.phones)}, "
-                f"birthday: {self.birthday}")
+        return (f"Contact name: {self.name.value}, \n"
+                f"phones: {'; '.join(p.value for p in self.phones)}, \n"
+                f"emails: {'; '.join(e.value for e in self.emails)}, \n"
+                f"address: {self.address}, \n"
+                f"birthday: {self.birthday}\n")
+
 
 class AddressBook(UserDict):
     """
@@ -134,7 +161,7 @@ class AddressBook(UserDict):
     def find(self, name):
         return self.data.get(name, None)
 
-    def add_record(self, record:Record):
+    def add_record(self, record: Record):
         self.data[record.name.value] = record
 
     def delete(self, name):
@@ -154,11 +181,11 @@ class AddressBook(UserDict):
 
     def get_birthdays_per_week(self):
         """
-        Функція get_birthdays_per_week шукає в усіх записах атрибут birthday 
+        Функція get_birthdays_per_week шукає в усіх записах атрибут birthday
         i виводить імена іменинників
             з днями народження на тиждень вперед від поточного дня,
             Користувачів, у яких день народження був на вихідних, потрібно привітати в понеділок.
-            
+
             у форматі:
             Monday: Bill Goots, Foo Bar
             Friday: John Smith
@@ -188,104 +215,6 @@ class AddressBook(UserDict):
     def __str__(self):
         return 'Address book:\n\t' + '\n\t'.join(record.__str__() for record in self.data.values())
 
+class NoteBook():
+    pass
 
-# Ловимо наші виняткoві ситуації
-@contextmanager
-def catch_my_exceptions(*exceptions):
-    try:
-        yield
-    except NameFormatError:
-        print("Wrong name")
-    except PhoneFormatError:
-        print("Wrong phone")
-    except BirthdayFormatError:
-        print("Wrong b-day")
-    except EmailFormatError:
-        print("Wrong email")
-
-
-def main():
-    # Створення нової адресної книги
-    book = AddressBook()
-
-    print("\nTest #1")
-    with catch_my_exceptions(Exception):
-        bad_name = Name("john") # Виведення: Wrong name
-        print(bad_name)
-
-    print("\nTest #2")
-    with catch_my_exceptions(Exception):
-        bad_phone = Phone("333") # Виведення: Wrong phone
-        print(bad_phone)
-
-    print("\nTest #3")
-    #jbond = Record("James Bond")
-    jbond = Record("Jbond")
-    jbond.add_phone("8765432100")
-    jbond.add_phone("1111111111")
-    jbond.add_phone("8765432100") # номер–дублікат -- не додаємо
-    print(jbond) # Виведення: Contact name: James Bond, phones: 8765432100; 1111111111
-
-    print("\nTest #4")
-    with catch_my_exceptions(Exception):
-        jbond.edit_phone("1111111111","1234") # Виведення: Wrong phone
-
-    print("\nTest #5")
-    with catch_my_exceptions(Exception):
-        jbond.edit_phone("1111111111","8765432100") # Заміна на номер, який вже існує -- ігноруєм
-    print(jbond) # Виведення: Contact name: James Bond, phones: 8765432100; 1111111111
-
-    print("\nTest #6")
-    with catch_my_exceptions(Exception):
-        jbond.remove_phone("111") # Видалення неіснуючого номера -- ігноруєм
-    print(jbond) # Виведення: Contact name: James Bond, phones: 8765432100; 1111111111
-
-    print("\nTest #7")
-    print(jbond.find_phone("5555555555")) # Виведення: None
-
-    print("\nTest #8")
-    book.add_record(jbond)
-    book.add_record(jbond) # додаємо дублікат
-    print(book) # друкуемо всю книгу
-    # Виведення:
-    # Address book:
-    #         Contact name: John, phones: 5555555555; 1112223333
-    #         Contact name: James Bond, phones: 8765432100; 1111111111
-
-    print("\nTest #9")
-    print(book.find("James")) # Виведення: None
-    print(book.delete("James")) # видаляємо неіснуючий контакт -- Виведення: False
-    print(book) # друкуемо всю книгу
-    # Виведення:
-    # Address book:
-    #         Contact name: John, phones: 5555555555; 1112223333
-    #         Contact name: James Bond, phones: 8765432100; 1111111111
-
-    print("\nTest #10")
-    jbond.add_birthday("22.12.2012")
-    print(jbond)
-    with catch_my_exceptions(Exception):
-        jbond.add_birthday("22.22.2014")
-    print(jbond)
-    print(jbond.birthday)
-    book.add_record(jbond)
-    print(book)
-
-    print("\nTest #11")
-    jbond.add_birthday("13.03.2012")
-    jane = Record("Jane")
-    jane.add_phone("2323232323")
-    jane.add_birthday("09.03.1914")
-    book.add_record(jane)
-    jane2 = Record("Janee")
-    jane2.add_phone("1323232329")
-    jane2.add_birthday("10.03.1914")
-    book.add_record(jane2)
-    jane3 = Record("Jaine")
-    jane3.add_phone("9323232329")
-    book.add_record(jane3)
-    print(book)
-    book.get_birthdays_per_week()
-
-if __name__ == "__main__":
-    main()
