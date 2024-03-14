@@ -49,6 +49,7 @@ class DictSortable(UserDict):
             sorted_dict[key] = self.data[key]
         return sorted_dict
 
+
 class Field:
     """
     Базовий клас для полів запису.
@@ -89,11 +90,13 @@ class Phone(Field):
             raise PhoneFormatError
         super().__init__(phone)
 
+
 class Birthday(Field):
     """
     Клас для зберігання дня народження.
     Формат виводу: DD.MM.YYYY
     """
+
     def __init__(self, value):
         super().__init__(value)
         day, month, year = self.value.split('.')
@@ -106,7 +109,7 @@ class Birthday(Field):
 
     def __str__(self):
         return f"{datetime.datetime(self.year, self.month, self.day).strftime('%d %B, %Y')}"
-    
+
     def __repr__(self):
         return f"{datetime.datetime(self.year, self.month, self.day).strftime('%d %B, %Y')}"
 
@@ -270,7 +273,7 @@ class AddressBook(UserDict):
                 # }
 
                 # set keys for the outer and inner dictionaries
-                key_outer = next_birthday.replace(day=1)        # This is datetime.date, but we will print out 'March, 2024'
+                key_outer = next_birthday.replace(day=1)  # This is datetime.date, but we will print out 'March, 2024'
                 key_inner = next_birthday.day
                 name = record.name
 
