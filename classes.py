@@ -88,13 +88,15 @@ class Name(Field):
 class Phone(Field):
     """
     Клас для зберігання номера телефону.
-    Телефон має задоволняти наступним вимогам:
-        1. Складається з цифр.
-        2. Довжина повинна бути 10 символів.
+    Телефон мoжуть мати наступний вигляд:
+        0671234567
+        (044)4567890
+        +380509876543
+        +380(4565)7890001
     """
 
     def __init__(self, phone):
-        if not re.fullmatch("[0-9]{10}", phone):
+        if not re.fullmatch(r'^(\+[1-9]{1,3})?(\(\d{1,4}\))?\d{6,15}$', phone):
             raise PhoneFormatError
         super().__init__(phone)
 
@@ -129,7 +131,7 @@ class Email(Field):
     """
 
     def __init__(self, email):
-        if not re.fullmatch(r".+@.+\..+", email):
+        if not re.fullmatch(r'[a-z0-9]{1,10}@[a-z0-9]{1,10}\.[a-z]{2,5}', email):
             raise EmailFormatError
         super().__init__(email)
 
