@@ -23,6 +23,12 @@ class EmailFormatError(Exception):
 class AddressFormatError(Exception):
     pass
 
+class MinArgsQuantityError(Exception):
+    pass
+
+class NotFoundNameError(Exception):
+    pass
+
 
 class Field:
     """
@@ -85,7 +91,7 @@ class Address(Field):
     """
     def __init__(self, name):
         if not re.fullmatch(r"^.{3,}", name):
-            raise NameFormatError
+            raise AddressFormatError
         super().__init__(name)
 
 class Record:
@@ -99,6 +105,26 @@ class Record:
         self.emails = []
         self.address = None
         self.birthday = None
+
+
+    def add_bday(self, new_bday: str):
+            self.birthday = Birthday(datetime.datetime.strptime(new_bday, '%d.%m.%Y'))
+
+    def add_address(self, new_address: str):
+            self.address = Address(new_address)
+
+
+    def find_email(self, email):
+        for email_field in self.emails:
+            if email_field.value == email:
+                return email_field
+            else:
+                return None
+
+    def add_email(self, email):
+        if self.find_email(email) is None:
+            self.emails.append(Email(email))
+
 
     def add_phone(self, phone):
         # Додаємо лише унікальний телефон
