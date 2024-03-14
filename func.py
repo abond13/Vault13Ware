@@ -83,14 +83,34 @@ def del_man(args):
     '''
     Функція видалення контакту
     '''
-    pass # FIXME наповнити кодом #######################
+    if len(args) == 0:
+        print("Ім'я не введено. Будь ласка, введіть ім'я або отримайте допомогу (команда 'Help').")
+        return
+
+    name = args[0]
+    try:
+        AddressBook.delete_record(name)
+        print(f"Контакт {name} видалено.")
+    except KeyError:
+        print(f"Контакт з іменем {name} не існує.")
 
 @input_error
 def cng_man(args):
     '''
     Функція зміни/оновлення контакту
     '''
-    pass # FIXME наповнити кодом #######################
+    if len(args) < 2:
+        print("Недостатньо даних. Будь ласка, надайте ім'я та нові деталі.")
+        return
+    
+    name = args[0]
+    new_detail = args[1]  # Це може бути номер телефону, електронна адреса тощо, залежно від реалізації.
+    try:
+        record = AddressBook.find(name)
+        record.update_detail(new_detail)  
+        print(f"Контакт {name} оновлено з новим деталем: {new_detail}.")
+    except KeyError:
+        print(f"Контакт з іменем {name} не існує.")
 
 @input_error
 def show_man(args):
@@ -104,7 +124,17 @@ def find_man(args):
     '''
     Функція пошуку контакту
     '''
-    pass # FIXME наповнити кодом #######################
+    if len(args) == 0:
+        print("Будь ласка, введіть критерій пошуку.")
+        return
+    
+    search_term = args[0]
+    results = AddressBook.search(search_term)
+    if results:
+        for result in results:
+            print(result)
+    else:
+        print("Співпадінь не знайдено.")
 
 @input_error
 def add_phone(args):
@@ -119,7 +149,16 @@ def cng_phone(args):
     '''
     Функція зміни номеру телефону
     '''
-    pass  # FIXME наповнити кодом #######################
+    if len(args) < 3:
+        return "Будь ласка, вкажіть ім'я, старий номер телефону та новий номер телефону."
+    
+    name, old_phone, new_phone = args
+    try:
+        record = AddressBook.find(name)
+        record.change_phone(Phone(old_phone), Phone(new_phone))
+        print(f"Телефон {old_phone} змінено на новий {new_phone} для {name}.")
+    except KeyError:
+        return "Такого контакту або номера телефону немає."
 
 @input_error
 def del_phone(args):
