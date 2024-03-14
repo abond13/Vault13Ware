@@ -1,0 +1,3 @@
+.gitignore
+.vs
+__pycache__
