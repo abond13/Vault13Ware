@@ -174,10 +174,10 @@ class Record:
             raise BirthdayFormatError from exception
     def __str__(self):
         return (f"Contact name: {self.name.value}, \n"
-                f"phones: {'; '.join(p.value for p in self.phones)}, \n"
-                f"emails: {'; '.join(e.value for e in self.emails)}, \n"
-                f"address: {self.address}, \n"
-                f"birthday: {self.birthday}\n")
+                f"    birthday: {self.birthday}, \n"
+                f"      phones: {'; '.join(p.value for p in self.phones)}, \n"
+                f"      emails: {'; '.join(e.value for e in self.emails)}, \n"
+                f"     address: {self.address}, \n")
 
 
 class AddressBook(UserDict):

@@ -1,6 +1,7 @@
 
 from classes import NameFormatError, PhoneFormatError, BirthdayFormatError, EmailFormatError, AddressFormatError, MinArgsQuantityError, NotFoundNameError
 from classes import Name, Phone, Address, Birthday, Record, AddressBook
+import msvcrt # для використання функції очикування натискання будь-якої клавіши
 
 def input_error(func):
     '''
@@ -87,11 +88,37 @@ def cng_man(args):
     pass # FIXME наповнити кодом #######################
 
 @input_error
-def show_man(args):
+def show_man(book: AddressBook, args: tuple):
     '''
     Функція показу даних контакту
     '''
-    pass # FIXME наповнити кодом #######################
+    PAGE_SIZE = 4 # Кількість контактів, які виводяться на екран за раз #TODO налаштувати константу на бойовому екрані
+
+    if len(args) >= 1:
+        name = args[0]
+        record = book.find(name)
+        if record:
+            print('Contact profile:\n')
+            print('----------------\n')
+            print(f'{record}\n')
+            print('----------------\n')
+        else:
+            raise NotFoundNameError
+    else:
+        print('Contact profiles:\n')
+        print('----------------\n')
+
+        counter = 1 # стартове значення лічильника
+        for record in book.data.values():
+            print(f'{book.find(record)}')
+            print('----------------\n')
+            if counter >= PAGE_SIZE:
+                print(f'\n                                           --- Press any key to continue ---                                            \n')
+                msvcrt.getch() # очикування натискання будь-якої клавіши
+                counter = 1
+            else:
+                counter += 1
+
 
 @input_error
 def find_man(args):
