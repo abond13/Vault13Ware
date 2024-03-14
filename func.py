@@ -303,7 +303,7 @@ def cng_adr(args):
     try:
         record = AddressBook.data[name]
         record.address = Address(new_address)
-        print(f"Адреса для {name} зміненна на нову - '{new_address}'.")
+        print(f"Адреса для {name} зміненна на нову '{new_address}'.")
     except KeyError:
         return f"Адресу для {name} не вказано."
     
