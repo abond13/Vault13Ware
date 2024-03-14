@@ -31,67 +31,64 @@ def main():
             break
 
         elif command == "help":
-            func.help()
+            func.help_doc()
 
         elif command == "hello":
             func.hello()
 
         elif command == "add-man":
-            func.add_man(args)
+            func.add_man(args, book)
 
         elif command == "del-man":
-            func.del_man(args)
+            func.del_man(args, book)
 
         elif command == "cng-man":
-            func.cng_man(args)
+            func.cng_man(args, book)
 
         elif command == "show-man":
-            func.show_man(args)
+            func.show_man(args, book)
 
         elif command == "find-man":
-            func.find_man(args)
+            func.find_man(args, book)
 
         elif command == "add-phone":
-            func.add_phone(args)
+            func.add_phone(args, book)
 
         elif command == "cng-phone":
-            func.cng_phone(args)
+            func.cng_phone(args, book)
 
         elif command == "del-phone":
-            func.del_phone(args)
+            func.del_phone(args, book)
 
         elif command == "add-email":
-            func.add_email(args)
+            func.add_email(args, book)
 
         elif command == "cng-email":
-            func.cng_email(args)
+            func.cng_email(args, book)
 
         elif command == "find-email":
-            func.find_email(args)
+            func.find_email(args, book)
 
         elif command == "del-email":
-            func.del_email(args)
+            func.del_email(args, book)
 
         elif command == "add-bday":
-            func.add_bday(args)
-
-        elif command == "cng-bday":
-            func.cng_bday(args)
+            func.add_bday(args, book)
 
         elif command == "del-bday":
-            func.del_bday(args)
+            func.del_bday(args, book)
 
         elif command == "show-bday":
-            func.show_bday(args)
+            func.show_bday(args, book)
 
         elif command == "add-adr":
-            func.add_adr(args)
+            func.add_adr(args, book)
 
         elif command == "del-adr":
-            func.del_adr(args)
+            func.del_adr(args, book)
 
         elif command == "find-adr":
-            func.find_adr(args)
+            func.find_adr(args, book)
 
         elif command == "add-note":
             func.add_note(args, notes)

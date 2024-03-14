@@ -6,6 +6,7 @@ import json
 import tempfile
 import os
 
+
 # Exceptions
 class NameFormatError(Exception):
     pass
@@ -38,6 +39,11 @@ class NoIdEnteredError(Exception):
 class NoIdFoundError(Exception):
     pass
 
+class MinArgsQuantityError(Exception):
+    pass
+
+class NotFoundNameError(Exception):
+    pass
 
 class DictSortable(UserDict):
     def sort_keys(self) -> dict:
@@ -202,12 +208,31 @@ class Record:
         except ValueError as exception:
             raise BirthdayFormatError from exception
 
+    def find_email(self, email):
+        for email_field in self.emails:
+            if email_field.value == email:
+                return email_field
+            else:
+                return None
+
+    def add_email(self, email):
+        if self.find_email(email) is None:
+            self.emails.append(Email(email))
+
+    def add_address(self, new_address: str):
+        MAX_ADDRESS_LENGTH = 250
+        self.address = Address(new_address[:MAX_ADDRESS_LENGTH])
+
+    def add_bday(self, new_bday: str):
+        self.birthday = Birthday(datetime.datetime.strptime(new_bday, '%d.%m.%Y'))
+
+
     def __str__(self):
         return (f"Contact name: {self.name.value}, \n"
-                f"phones: {'; '.join(p.value for p in self.phones)}, \n"
-                f"emails: {'; '.join(e.value for e in self.emails)}, \n"
-                f"address: {self.address}, \n"
-                f"birthday: {self.birthday}\n")
+                f"    birthday: {self.birthday}, \n"
+                f"      phones: {'; '.join(p.value for p in self.phones)}, \n"
+                f"      emails: {'; '.join(e.value for e in self.emails)}, \n"
+                f"     address: {self.address}\n")
 
 
 class AddressBook(UserDict):
