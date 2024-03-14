@@ -1,6 +1,6 @@
-from classes import AddressBook, NoteBook # модуль з класами
-import func # модуль з функціями виконання команд боту
-import features # модуль з фічами
+from classes import AddressBook, NoteBook  # модуль з класами
+import func  # модуль з функціями виконання команд боту
+import features  # модуль з фічами
 
 
 def main():
@@ -94,19 +94,20 @@ def main():
             func.find_adr(args)
 
         elif command == "add-note":
-            func.add_note(args)
+            func.add_note(args, notes)
 
         elif command == "del-note":
-            func.del_note(args)
+            func.del_note(args, notes)
 
         elif command == "find-note":
-            func.find_note(args)
+            func.find_note(args, notes)
 
         elif command == "show-note":
-            func.show_note(args)
+            func.show_note(args, notes)
 
         else:
             print("Invalid command. Type 'help' for get a list of commands.")
+
 
 if __name__ == "__main__":
     main()
