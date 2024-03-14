@@ -37,73 +37,70 @@ def main():
             func.hello()
 
         elif command == "add-man":
-            func.add_man(args)
+            func.add_man(book, args)
 
         elif command == "del-man":
-            func.del_man(args)
+            func.del_man(book, args)
 
         elif command == "cng-man":
-            func.cng_man(args)
+            func.cng_man(book, args)
 
         elif command == "show-man":
-            func.show_man(args)
+            func.show_man(book, args)
 
         elif command == "find-man":
-            func.find_man(args)
+            func.find_man(book, args)
 
         elif command == "add-phone":
-            func.add_phone(args)
+            func.add_phone(book, args)
 
         elif command == "cng-phone":
-            func.cng_phone(args)
+            func.cng_phone(book, args)
 
         elif command == "del-phone":
-            func.del_phone(args)
+            func.del_phone(book, args)
 
         elif command == "add-email":
-            func.add_email(args)
+            func.add_email(book, args)
 
         elif command == "cng-email":
-            func.cng_email(args)
+            func.cng_email(book, args)
 
         elif command == "find-email":
-            func.find_email(args)
+            func.find_email(book, args)
 
         elif command == "del-email":
-            func.del_email(args)
+            func.del_email(book, args)
 
         elif command == "add-bday":
-            func.add_bday(args)
-
-        elif command == "cng-bday":
-            func.cng_bday(args)
+            func.add_bday(book, args)
 
         elif command == "del-bday":
-            func.del_bday(args)
+            func.del_bday(book, args)
 
         elif command == "show-bday":
-            func.show_bday(args)
+            func.show_bday(book, args)
 
         elif command == "add-adr":
-            func.add_adr(args)
+            func.add_adr(book, args)
 
         elif command == "del-adr":
-            func.del_adr(args)
+            func.del_adr(book, args)
 
         elif command == "find-adr":
-            func.find_adr(args)
+            func.find_adr(book, args)
 
         elif command == "add-note":
-            func.add_note(args)
+            func.add_note(notes, args)
 
         elif command == "del-note":
-            func.del_note(args)
+            func.del_note(notes, args)
 
         elif command == "find-note":
-            func.find_note(args)
+            func.find_note(notes, args)
 
         elif command == "show-note":
-            func.show_note(args)
+            func.show_note(notes, args)
 
         else:
             print("Invalid command. Type 'help' for get a list of commands.")

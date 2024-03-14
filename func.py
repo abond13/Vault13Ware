@@ -55,7 +55,7 @@ def hello():
     print("How can I help you?") # FIXME наповнити змістом #######################
 
 @input_error
-def add_man(args: tuple):
+def add_man(book: AddressBook, args: tuple):
     '''
     Функція додавання контакту
     '''
@@ -64,10 +64,10 @@ def add_man(args: tuple):
         raise MinArgsQuantityError
 
     name = args[0]
-    record = AddressBook.find(name)
+    record = book.find(name)
     if not record:
         record = Record(name)
-        AddressBook.add_record(record)
+        book.add_record(record)
         print(f"Contact {name} is added.")
     else:
         print(f"Contact {name} is exist already. Nothing is added.")
@@ -101,7 +101,7 @@ def find_man(args):
     pass # FIXME наповнити кодом #######################
 
 @input_error
-def add_phone(args: tuple):
+def add_phone(book: AddressBook, args: tuple):
     '''
     Функція додавання номеру(-ів) телефону(-ів)
     '''
@@ -111,7 +111,7 @@ def add_phone(args: tuple):
 
     name = args[0]
     new_phones_tuple = (args[1:],)
-    record = AddressBook.find(name)
+    record = book.find(name)
 
     if record:
         for phone in new_phones_tuple:
@@ -138,7 +138,7 @@ def del_phone(args):
     pass  # FIXME наповнити кодом #######################
 
 @input_error
-def add_email(args):
+def add_email(book: AddressBook, args: tuple):
     '''
     Функція додавання email
     '''
@@ -148,7 +148,7 @@ def add_email(args):
 
     name = args[0]
     new_email_tuple = (args[1:],)
-    record = AddressBook.find(name)
+    record = book.find(name)
 
     if record:
         for email in new_email_tuple:
@@ -182,7 +182,7 @@ def del_email(args):
     pass  # FIXME наповнити кодом #######################
 
 @input_error
-def add_bday(args):
+def add_bday(book: AddressBook, args: tuple):
     '''
     Функція додавання дня народження
     '''
@@ -192,7 +192,7 @@ def add_bday(args):
 
     name = args[0]
     new_bday = args[1]
-    record = AddressBook.find(name)
+    record = book.find(name)
 
     if record:
         if record.birthday is None:
@@ -226,7 +226,7 @@ def show_bday(args):
     pass  # FIXME наповнити кодом #######################
 
 @input_error
-def add_adr(args):
+def add_adr(book: AddressBook, args: tuple):
     '''
     Функція додавання адреси
     '''
@@ -238,7 +238,7 @@ def add_adr(args):
 
     name = args[0]
     new_address = args[1]
-    record = AddressBook.find(name)
+    record = book.find(name)
 
     if record:
         if record.address is None:
