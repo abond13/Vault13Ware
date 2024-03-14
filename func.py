@@ -104,7 +104,7 @@ def cng_man(args):
         return
     
     name = args[0]
-    new_detail = args[1]  # Це може бути номер телефону, електронна адреса тощо, залежно від реалізації.
+    new_detail = args[1]  # Це може бути номер телефону, електронна адреса тощо, залежно від реалізації
     try:
         record = AddressBook.find(name)
         record.update_detail(new_detail)  
