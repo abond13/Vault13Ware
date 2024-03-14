@@ -5,6 +5,7 @@ def greeting():
     '''
     print("Welcome to the assistant bot!")
 
+
 def goodbye():
     '''
     Відображення фічі ФінальнаЗаставка - зробимо коли дійдуть руки.

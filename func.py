@@ -1,30 +1,38 @@
-
-from classes import NameFormatError, PhoneFormatError, BirthdayFormatError, EmailFormatError, AddressFormatError
-from classes import Name, Phone, Address, Birthday, Record, AddressBook, Email
+from classes import NameFormatError, PhoneFormatError, BirthdayFormatError, EmailFormatError, AddressFormatError, \
+    NoTextError, NoIdEnteredError, NoIdFoundError
+from classes import Name, Phone, Address, Birthday, Record, AddressBook, NoteBook, Note, Email
 
 def input_error(func):
     '''
     Судячи з усього - це декоратор обробки помилок
     '''
+
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
         except ValueError:
-            return "Give me name and phone please."
+            print("Give me name and phone please.")
         except IndexError:
-            return "Give me name please."
+            print("Give me name please.")
         except KeyError:
-            return "No such contact."
+            print("No such contact.")
         except NameFormatError:
-            return "Wrong name format."
+            print("Wrong name format.")
         except PhoneFormatError:
-            return "Wrong phone format."
+            print("Wrong phone format.")
         except BirthdayFormatError:
-            return "Wrong birthday format."
+            print("Wrong birthday format.")
         except EmailFormatError:
-            return "Wrong email format."
+            print("Wrong email format.")
         except AddressFormatError:
-            return "Wrong email format."
+            print("Wrong address format.")
+        except NoTextError:
+            print("Give me text please")
+        except NoIdEnteredError:
+            print("Give me id please")
+        except NoIdFoundError:
+            print("Cannot find id")
+
     return inner
 
 def parse_input(user_input: str):
@@ -36,17 +44,20 @@ def parse_input(user_input: str):
     args_tuple = (*args,)
     return cmd_string, args_tuple
 
+
 def help():
     '''
     Друк сторінки з синтаксисом команд
     '''
-    print("Usage:")    # FIXME наповнити змістом #######################
+    print("Usage:")  # FIXME наповнити змістом #######################
+
 
 def hello():
     '''
     Друк сторінки з привітанням
     '''
-    print("How can I help you?") # FIXME наповнити змістом #######################
+    print("How can I help you?")  # FIXME наповнити змістом #######################
+
 
 @input_error
 def add_man(args: tuple):
@@ -66,95 +77,50 @@ def add_man(args: tuple):
     else:
         print(f"Contact {name} is exist already. Nothing is added.")
 
+
 @input_error
 def del_man(args):
     '''
     Функція видалення контакту
     '''
-    if len(args) == 0:
-        print("Ім'я не введено. Будь ласка, введіть ім'я або отримайте допомогу (команда 'Help').")
-        return
-    name = args[0]
-    try:
-        AddressBook.delete_record(name)
-        print(f"Контакт {name} видалено.")
-    except KeyError:
-        print(f"Контакт з іменем {name} не існує.")
+    pass # FIXME наповнити кодом #######################
 
 @input_error
 def cng_man(args):
     '''
     Функція зміни/оновлення контакту
     '''
-    if len(args) < 2:
-        print("Недостатньо даних. Будь ласка, надайте ім'я та нові деталі.")
-        return
-    
-    name = args[0]
-    new_detail = args[1]  # Це може бути номер телефону, електронна адреса тощо, залежно від реалізації.
-    try:
-        record = AddressBook.find(name)
-        record.update_detail(new_detail)  
-        print(f"Контакт {name} оновлено з новим деталем: {new_detail}.")
-    except KeyError:
-        print(f"Контакт з іменем {name} не існує.")
+    pass # FIXME наповнити кодом #######################
 
 @input_error
 def show_man(args):
     '''
     Функція показу даних контакту
     '''
-    if len(args) == 0:
-        print("Ім'я не введено. Будь ласка, введіть ім'я або отримайте допомогу (команда 'Help').")
-        return
-
-    name = args[0]
-    try:
-        record = AddressBook.find(name)
-        print(f"Деталі контакту для {name}: {record}")
-    except KeyError:
-        print(f"Контакт з іменем {name} не існує.")
+    pass # FIXME наповнити кодом #######################
 
 @input_error
 def find_man(args):
     '''
     Функція пошуку контакту
     '''
-    if len(args) == 0:
-        print("Будь ласка, введіть критерій пошуку.")
-        return
-    
-    search_term = args[0]
-    results = AddressBook.search(search_term)  # Припускаємо, що в AddressBook є метод пошуку.
-    if results:
-        for result in results:
-            print(result)
-    else:
-        print("Співпадінь не знайдено.")
+    pass # FIXME наповнити кодом #######################
 
 @input_error
 def add_phone(args):
     '''
     Функція додавання номеру(-ів) телефону(-ів)
     '''
-    pass # FIXME наповнити кодом #######################
+    pass  # FIXME наповнити кодом #######################
+
 
 @input_error
 def cng_phone(args):
     '''
     Функція зміни номеру телефону
     '''
-    if len(args) < 3:
-        return "Будь ласка, вкажіть ім'я, старий номер телефону та новий номер телефону."
-    
-    name, old_phone, new_phone = args
-    try:
-        record = AddressBook.find(name)
-        record.change_phone(Phone(old_phone), Phone(new_phone))
-        print(f"Телефон {old_phone} змінено на новий {new_phone} для {name}.")
-    except KeyError:
-        return "Такого контакту або номера телефону немає."
-    
+    pass  # FIXME наповнити кодом #######################
+
 @input_error
 def del_phone(args):
     '''
@@ -171,12 +137,14 @@ def del_phone(args):
     except KeyError:
         return "Такого контакту або номера телефону немає."
 
+
 @input_error
 def add_email(args):
     '''
     Функція додавання email
     '''
     pass  # FIXME наповнити кодом #######################
+
 
 @input_error
 def cng_email(args):
@@ -194,6 +162,7 @@ def cng_email(args):
     except KeyError:
         return "Такого контакту чи електронної пошти немає."
 
+
 @input_error
 def find_email(args):
     '''
@@ -209,6 +178,7 @@ def find_email(args):
             found = True
     if not found:
         print(f"Контакту з електронною поштою {email} не знайдено.")
+
 
 @input_error
 def del_email(args):
@@ -226,12 +196,14 @@ def del_email(args):
     except KeyError:
         return "Такого контакту чи електронної пошти немає."
 
+
 @input_error
 def add_bday(args):
     '''
     Функція додавання дня народження
     '''
     pass  # FIXME наповнити кодом #######################
+
 
 @input_error
 def cng_bday(args):
@@ -249,6 +221,7 @@ def cng_bday(args):
     except KeyError:
         return "Такого контакту немає."
 
+
 @input_error
 def del_bday(args):
     '''
@@ -265,6 +238,7 @@ def del_bday(args):
     except KeyError:
         return "Такого контакту немає."
 
+
 @input_error
 def show_bday(args):
     '''
@@ -272,41 +246,14 @@ def show_bday(args):
     '''
     pass  # FIXME наповнити кодом #######################
 
+
 @input_error
 def add_adr(args):
     '''
     Функція додавання адреси
     '''
-    if len(args) < 2:
-        return "Будь ласка, вкажіть ім'я та адресу."
-    
-    name, address = args[0], " ".join(args[1:])
-    try:
-        record = AddressBook.data[name]
-        if not record.address:
-            record.address = Address(address)
-            print(f"Адреса '{address}' додана до {name}.")
-        else:
-            print(f"{name} вже має адресу. Використовуйте 'cng_adr', щоб змінити її.")
-    except KeyError:
-        return f"Адресу для {name} не вказано."
+    pass  # FIXME наповнити кодом #######################
 
-@input_error 
-def cng_adr(args):
-    '''
-    Змінює адресу контакту.
-    '''
-    if len(args) < 2:
-        return "Будь ласка, вкажіть назву та нову адресу."
-    
-    name, new_address = args[0], " ".join(args[1:])
-    try:
-        record = AddressBook.data[name]
-        record.address = Address(new_address)
-        print(f"Адреса для {name} зміненна на нову '{new_address}'.")
-    except KeyError:
-        return f"Адресу для {name} не вказано."
-    
 @input_error
 def del_adr(args):
     '''
@@ -325,6 +272,7 @@ def del_adr(args):
             print(f"{name} не має адреси для видалення.")
     except KeyError:
         return f"Адресу для {name} не вказано."
+
 
 @input_error
 def find_adr(args):
@@ -345,30 +293,59 @@ def find_adr(args):
 
 
 @input_error
-def add_note(args):
+def add_note(args, notes: NoteBook):
     '''
     Функція додавання нотатки
     '''
-    pass  # FIXME наповнити кодом #######################
+    if len(args) == 0:
+        raise NoTextError()
+
+    text = args[0]
+    note = Note(text)
+    notes.add_note(note)
+    print("Note added")
+
 
 @input_error
-def del_note(args):
+def del_note(args, notes: NoteBook):
     '''
     Функція додавання нотатки
     '''
-    pass  # FIXME наповнити кодом #######################
+    if len(args) == 0:
+        raise NoIdEnteredError()
+    id_to_delete = int(args[0])
+    if notes.delete(id_to_delete):
+        print("Note deleted")
+    else:
+        raise NoIdFoundError()
+
 
 @input_error
-def find_note(args):
+def find_note(args, notes: NoteBook):
     '''
     Функція додавання нотатки
     '''
-    pass  # TODO наповнити кодом #######################
+    if len(args) == 0:
+        raise NoTextError()
+    text = args[0]
+    found_notes = notes.find_notes_by_text(text)
+    if len(found_notes) == 0:
+        print("No notes found")
+    else:
+        print("\n----\n".join(
+            map(lambda note_item: f"{note_item[0]}: {note_item[1].short_str()}", found_notes.items())))
+
 
 @input_error
-def show_note(args):
+def show_note(args, notes: NoteBook):
     '''
     Функція додавання нотатки
     '''
-    pass  # TODO наповнити кодом #######################
-
+    if len(args) == 0:
+        raise NoIdEnteredError()
+    id_to_find = int(args[0])
+    note = notes.find_note_by_id(id_to_find)
+    if note:
+        print(note)
+    else:
+        raise NoIdFoundError()
