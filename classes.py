@@ -71,13 +71,26 @@ class Phone(Field):
             raise PhoneFormatError
         super().__init__(phone)
 
-class Birthday(datetime.date): # Why not Field? #######################
+class Birthday(Field):
     """
     Клас для зберігання дня народження.
     Формат виводу: DD.MM.YYYY
     """
+    def __init__(self, value):
+        super().__init__(value)
+        day, month, year = self.value.split('.')
+        self.day, self.month, self.year = int(day), int(month), int(year)
+        
+        try:
+            datetime.date(self.year, self.month, self.day)
+        except ValueError:
+            raise ValueError("Incorrect date format, should be DD.MM.YYYY")
+        
     def __str__(self):
-        return f"{self.day:02}.{self.month:02}.{self.year:04}"
+        return f"{datetime.datetime(self.year, self.month, self.day).strftime("%d %B, %Y")}"
+    
+    def __repr__(self):
+        return f"{datetime.datetime(self.year, self.month, self.day).strftime("%d %B, %Y")}"
 
 class Email(Field):
     """
@@ -155,7 +168,7 @@ class Record:
         day, month, year = birthday.split('.')
         # Strong check by creating a date object
         try:
-            self.birthday = Birthday(day=int(day), month=int(month), year=int(year))
+            self.birthday = Birthday(birthday)
         except ValueError as exception:
             raise BirthdayFormatError from exception
     def __str__(self):

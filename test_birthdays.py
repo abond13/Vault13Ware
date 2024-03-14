@@ -51,4 +51,4 @@ jane4.add_birthday("10.04.1914")
 book.add_record(jane4)
     
 # print(book)
-book.get_birthdays(3)
+book.get_birthdays(30)
