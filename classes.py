@@ -105,10 +105,10 @@ class Birthday(Field):
             raise ValueError("Incorrect date format, should be DD.MM.YYYY")
 
     def __str__(self):
-        return f"{datetime.datetime(self.year, self.month, self.day).strftime("%d %B, %Y")}"
-
+        return f"{datetime.datetime(self.year, self.month, self.day).strftime('%d %B, %Y')}"
+    
     def __repr__(self):
-        return f"{datetime.datetime(self.year, self.month, self.day).strftime("%d %B, %Y")}"
+        return f"{datetime.datetime(self.year, self.month, self.day).strftime('%d %B, %Y')}"
 
 
 class Email(Field):
@@ -299,7 +299,7 @@ class AddressBook(UserDict):
             inner_dict = inner_dict.sort_keys()
             print(key_outer.strftime("%B, %Y"))
             for key_inner, name_list in inner_dict.items():
-                print(f"{key_inner}: {", ".join([name.value for name in name_list])}")
+                print(f"{key_inner}: {', '.join([name.value for name in name_list])}")
             print()
 
     def __str__(self):
