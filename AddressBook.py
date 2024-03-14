@@ -5,10 +5,8 @@
 import re
 import datetime
 from collections import UserDict
-from collections import defaultdict
+from collections import defaultdict                     # I don't understand, why it's here. If not needed, we should delete this
 from contextlib import contextmanager
-from time import strftime
-from get_birthdays_project import get_days, DictSortable
 
 ### Exceptions
 class NameFormatError(Exception):
@@ -82,6 +80,18 @@ class Birthday(Field):
     
     def __repr__(self):
         return f"{datetime.datetime(self.year, self.month, self.day).strftime("%d %B, %Y")}"
+    
+class DictSortable(UserDict):
+    def sort_keys(self) -> dict:
+        """
+        Sort the dictionary through key values (int or datetime, for example)
+        """
+        sorted_dict = {}
+        keys = list(self.data.keys())
+        keys.sort()
+        for key in keys:
+            sorted_dict[key] = self.data[key]
+        return sorted_dict
 
 class Record:
     """
@@ -192,43 +202,50 @@ class AddressBook(UserDict):
         Prints out birthdays of contacts within the range of days.
         Returns nothing.
         """
-        today = datetime.datetime.today().date()
+        
         calendar = {}
-    
-        # Going to work with the next structure: (dict of dicts)
-        #
-        # {
-        #   'March, 2024' : { 12: ['Brandon','Olivia'], 27: ['Gregor'] }
-        #   'April, 2024' : { 3: ['Viktor'], 14: ['Sofia'], 18: ['Thomas', 'Andrea', 'Magnus'] }                       
-        # }
-    
-        for record in self.data.values():
-            birthday_day, birthday_month = record.birthday.day, record.birthday.month               # Some records may have NONE
-            name = record.name
-            for day in get_days(today, quantity):    
-                if (birthday_month, birthday_day) == (day.month, day.day):
-            
-                    # set keys for the outer and inner dictionaries
-                    key_outer = datetime.datetime(day.year, day.month, day=1).date()        # This is datetime.date, but we will print out 'March, 2024'
-                    key_inner = birthday_day
-            
-                    # if there is no such key - create it!
-                    try:
-                        calendar[key_outer]
-                    except KeyError:
-                        calendar[key_outer] = {}
-                
-                        # it's time to fill in the inner dictionary:
-                    if len(calendar[key_outer]) == 0:
-                        calendar[key_outer][key_inner] = [name] 
-                    else:
-                        try:
-                            # if there is already such cell with given month and day - append new name
-                            calendar[key_outer][key_inner].append(name)
-                        except KeyError:
-                            # if there is no such key for inner dictionary - also create it
-                            calendar[key_outer][key_inner] = [name]
+        today = datetime.datetime.today().date()
 
+        for record in self.data.values():
+            if record.birthday is None:
+                continue
+            next_birthday = datetime.date(today.year, record.birthday.month, record.birthday.day)
+            if next_birthday < today:
+                next_birthday = next_birthday.replace(year=today.year + 1)
+            delta_days = (next_birthday - today).days
+            if delta_days >= quantity:
+                continue
+            else:
+                
+                # Going to work with the next structure: (dict of dicts)
+                #
+                # {
+                #   'March, 2024' : { 12: ['Brandon','Olivia'], 27: ['Gregor'] }
+                #   'April, 2024' : { 3: ['Viktor'], 14: ['Sofia'], 18: ['Thomas', 'Andrea', 'Magnus'] }                       
+                # }
+
+                # set keys for the outer and inner dictionaries
+                key_outer = next_birthday.replace(day=1)        # This is datetime.date, but we will print out 'March, 2024'
+                key_inner = next_birthday.day
+                name = record.name
+                
+                # if there is no such key - create it!
+                try:
+                    calendar[key_outer]
+                except KeyError:
+                    calendar[key_outer] = {}
+                
+                    # it's time to fill in the inner dictionary:
+                if len(calendar[key_outer]) == 0:
+                    calendar[key_outer][key_inner] = [name] 
+                else:
+                    try:
+                        # if there is already such cell with given month and day - append new name
+                        calendar[key_outer][key_inner].append(name)
+                    except KeyError:
+                        # if there is no such key for inner dictionary - also create it
+                        calendar[key_outer][key_inner] = [name]
+        
         # Don't forget to sort our dictionaries by date
         calendar = DictSortable(calendar)
         calendar = calendar.sort_keys()
@@ -327,21 +344,58 @@ def main():
     print(book)
 
     print("\nTest #11")
+    
     jbond.add_birthday("13.03.2012")
+    
+    michael = Record("Michael")
+    michael.add_birthday("13.03.2016")
+    book.add_record(michael)
+    
+    jane = Record("Jane")
+    jane.add_birthday("18.03.2016")
+    book.add_record(jane)
+    
+    oscar = Record("Oscar")
+    oscar.add_birthday("15.03.2016")
+    book.add_record(oscar)
+    
+    volodymyr = Record("Volodymyr")
+    volodymyr.add_birthday("15.05.2016")
+    book.add_record(volodymyr)
+    
+    stasy = Record("Stacy")
+    stasy.add_birthday("10.04.2016")
+    book.add_record(stasy)
+
+    melissa = Record("Melissa")
+    melissa.add_birthday("20.03.2016")
+    book.add_record(melissa)
+
+    angela = Record("Angela")
+    angela.add_birthday("19.03.2016")
+    book.add_record(angela)
+
     jane = Record("Jane")
     jane.add_phone("2323232323")
     jane.add_birthday("16.03.1914")
     book.add_record(jane)
+    
     jane2 = Record("Janee")
     jane2.add_phone("1323232329")
     jane2.add_birthday("15.03.1914")
     book.add_record(jane2)
+    
     jane3 = Record("Jaine")
     jane3.add_phone("9323232329")
-    jane3.add_birthday("15.03.1914")
     book.add_record(jane3)
+    
+    jane4 = Record("Janet")
+    jane4.add_phone("9323232329")
+    jane4.add_birthday("10.04.1914")
+    book.add_record(jane4)
+    
     print(book)
-    book.get_birthdays(3)
+    book.get_birthdays(60)
 
 if __name__ == "__main__":
     main()
