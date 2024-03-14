@@ -26,7 +26,7 @@ def input_error(func):
         except EmailFormatError:
             print("Wrong email format.")
         except AddressFormatError:
-            print("Wrong email format.")
+            print("Wrong address format.")
         except NoTextError:
             print("Give me text please")
         except NoIdEnteredError:
