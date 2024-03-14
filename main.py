@@ -31,7 +31,7 @@ def main():
             break
 
         elif command == "help":
-            func.help()
+            func.help_doc()
 
         elif command == "hello":
             func.hello()
@@ -104,6 +104,7 @@ def main():
 
         else:
             print("Invalid command. Type 'help' for get a list of commands.")
+
 
 if __name__ == "__main__":
     main()

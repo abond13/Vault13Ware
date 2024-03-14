@@ -1,7 +1,7 @@
 from classes import NameFormatError, PhoneFormatError, BirthdayFormatError, EmailFormatError, AddressFormatError, \
     NoTextError, NoIdEnteredError, NoIdFoundError, MinArgsQuantityError, NotFoundNameError
-from classes import Name, Phone, Address, Birthday, Record, AddressBook, NoteBook, Note
-import msvcrt # для використання функції очикування натискання будь-якої клавіши
+from classes import Record, AddressBook, NoteBook, Note
+import msvcrt  # для використання функції очикування натискання будь-якої клавіши
 
 
 def input_error(func):
@@ -50,7 +50,7 @@ def parse_input(user_input: str):
     return cmd_string, args_tuple
 
 
-def help():
+def help_doc():
     '''
     Друк сторінки з синтаксисом команд
     '''
@@ -254,7 +254,6 @@ def add_bday(args: tuple, book: AddressBook):
             print(f"Email {new_bday} is updated as birthday to {name}.\n")
     else:
         raise NotFoundNameError
-
 
 
 @input_error
