@@ -12,30 +12,29 @@ def input_error(func):
         try:
             return func(*args, **kwargs)
         except ValueError:
-            return "Give me name and phone please."
+            print("Give me name and phone please.")
         except IndexError:
-            return "Give me name please."
+            print("Give me name please.")
         except KeyError:
-            return "No such contact."
+            print("No such contact.")
         except NameFormatError:
-            return "Wrong name format."
+            print("Wrong name format.")
         except PhoneFormatError:
-            return "Wrong phone format."
+            print("Wrong phone format.")
         except BirthdayFormatError:
-            return "Wrong birthday format."
+            print("Wrong birthday format.")
         except EmailFormatError:
-            return "Wrong email format."
+            print("Wrong email format.")
         except AddressFormatError:
-            return "Wrong email format."
+            print("Wrong address format.")
         except NoTextError:
-            return "Give me text please"
+            print("Give me text please")
         except NoIdEnteredError:
-            return "Give me id please"
+            print("Give me id please")
         except NoIdFoundError:
-            return "Cannot find id"
+            print("Cannot find id")
 
     return inner
-
 
 def parse_input(user_input: str):
     '''
