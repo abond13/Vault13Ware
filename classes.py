@@ -2,7 +2,9 @@ import re
 import datetime
 from collections import UserDict
 from collections import defaultdict
-
+import json
+import tempfile
+import os
 
 # Exceptions
 class NameFormatError(Exception):
@@ -224,15 +226,60 @@ class AddressBook(UserDict):
             return True
         return False
 
-    def load(self):
+    def load(self, filename='./.address_book.json'):
         """
-        Load configuration from YAML file
-        """
+        Зчитування данних з JSON файлу і створення записів (Record)
+        для данного екземпляру AddressBook.
+        Зчитування відбувається в режимі обʼєднання, але у разі
+        співпадіння імен записів, записи з JSON файлу мають перевагу
+        над вже існуючими записами в екземплярі AddressBook.
 
-    def save(self):
+        За замовчуванням зчитується файл ./.address_book.json 
         """
-        Save configuration to YAML file
+        try:
+            with open(filename, "r", encoding="utf-8") as book_file:
+                book_dict = json.load(book_file)
+        except OSError:
+            return
+        except json.JSONDecodeError:
+            print(f"Address book JSON file {filename} is broken.")
+            return
+        for name, attrs in book_dict.items():
+            try:
+                record = Record(name)
+                for attr, value in attrs.items():
+                    if value:
+                        if attr == "phones":
+                            for phone in value:
+                                record.add_phone(phone["value"])
+                        elif attr == "emails":
+                            for email in value:
+                                record.add_email(email["value"])
+                        elif attr == "address":
+                            record.add_address(value["value"])
+                        elif attr == "birthday":
+                            record.add_birthday(value["value"])
+                self.add_record(record)
+            except (NameFormatError,
+                    PhoneFormatError,
+                    EmailFormatError,
+                    BirthdayFormatError,
+                    AddressFormatError):
+                continue
+
+    def save(self, filename='./.address_book.json'):
         """
+        Зберігання всіх записів (Record) данного екземпляра AddressBook в JSON файл.
+        За замовчуванням JSON файл розташований в ./.address_book.json
+        Додатково використовується проміжний TMP файл для запобігання
+        втрати данних під час відкриття файла на запис, але без подальшого запису
+        у випадку нештатної ситуації.
+        """
+        book_json = json.dumps(self.data, default=lambda o: o.__dict__, indent=4)
+        with tempfile.NamedTemporaryFile('w', encoding="utf-8",
+                dir='.', prefix=filename+'~', delete=False) as tf:
+            tf.write(book_json)
+            os.rename(tf.name, filename)
 
     def get_birthdays(self, quantity: int):
         """
