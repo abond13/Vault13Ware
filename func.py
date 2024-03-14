@@ -1,6 +1,6 @@
 
 from classes import NameFormatError, PhoneFormatError, BirthdayFormatError, EmailFormatError, AddressFormatError
-from classes import Name, Phone, Address, Birthday, Record, AddressBook
+from classes import Name, Phone, Address, Birthday, Record, AddressBook, Email
 
 def input_error(func):
     '''
@@ -54,7 +54,7 @@ def add_man(args: tuple):
     Функція додавання контакту
     '''
     if len(args) == 0:
-        print("Name isn't entered. Please enter or get help (command 'Help').")
+        print("Ім'я не введено. Будь ласка, введіть або отримайте довідку (command 'Help').")
         return
 
     name = args[0]
@@ -62,9 +62,9 @@ def add_man(args: tuple):
     if not record:
         record = Record(name)
         AddressBook.add_record(record)
-        print(f"Contact {name} added.")
+        print(f"Контакт {name} додано.")
     else:
-        print(f"Contact {name} is exist already. Nothing is added.")
+        print(f"Контакт {name} вже створенно.")
 
 @input_error
 def del_man(args):
@@ -146,7 +146,7 @@ def add_phone(args):
         record = AddressBook.find(name)
         for phone in phones:
             record.add_phone(Phone(phone))
-        print(f"Phones {phones} added to {name}.")
+        print(f"Телефон {phones} додано до {name}.")
     except KeyError:
         return "Такого контакту немає."
 
@@ -162,7 +162,7 @@ def cng_phone(args):
     try:
         record = AddressBook.find(name)
         record.change_phone(Phone(old_phone), Phone(new_phone))
-        print(f"Phone {old_phone} changed to {new_phone} for {name}.")
+        print(f"Телефон {old_phone} змінено на новий {new_phone} для контакту {name}.")
     except KeyError:
         return "Такого контакту або номера телефону немає."
 
@@ -178,7 +178,7 @@ def del_phone(args):
     try:
         record = AddressBook.find(name)
         record.remove_phone(Phone(phone))
-        print(f"Phone {phone} removed from {name}.")
+        print(f"Телефон {phone} видалено у {name}.")
     except KeyError:
         return "Такого контакту або номера телефону немає."
 
@@ -194,7 +194,7 @@ def add_email(args):
     try:
         record = AddressBook.find(name)
         record.add_email(Email(email))   #####???????????
-        print(f"Email {email} added to {name}.")
+        print(f"Email {email} додано до {name}.")
     except KeyError:
         return "Такого контакту немає."
 
@@ -210,7 +210,7 @@ def cng_email(args):
     try:
         record = AddressBook.find(name)
         record.change_email(Email(old_email), Email(new_email))
-        print(f"Email {old_email} changed to {new_email} for {name}.")
+        print(f"Email {old_email} змінено на {new_email} для {name}.")
     except KeyError:
         return "Такого контакту чи електронної пошти немає."
 
@@ -242,7 +242,7 @@ def del_email(args):
     try:
         record = AddressBook.find(name)
         record.remove_email(Email(email))
-        print(f"Email {email} removed from {name}.")
+        print(f"Email {email} видалено у {name}.")
     except KeyError:
         return "Такого контакту чи електронної пошти немає."
 
@@ -258,7 +258,7 @@ def add_bday(args):
     try:
         record = AddressBook.find(name)
         record.add_birthday(Birthday(bday))
-        print(f"Birthday {bday} added to {name}.")
+        print(f"День народження {bday} додано до {name}.")
     except KeyError:
         return "Такого контакту немає."
 
@@ -274,7 +274,7 @@ def cng_bday(args):
     try:
         record = AddressBook.find(name)
         record.change_birthday(Birthday(bday))
-        print(f"Birthday changed to {bday} for {name}.")
+        print(f"День народженння {bday} змінено для {name}.")
     except KeyError:
         return "Такого контакту немає."
 
@@ -290,7 +290,7 @@ def del_bday(args):
     try:
         record = AddressBook.find(name)
         record.remove_birthday()
-        print(f"Birthday removed from {name}.")
+        print(f"День народження видалено у {name}.")
     except KeyError:
         return "Такого контакту немає."
 
@@ -307,7 +307,7 @@ def add_adr(args):
     Функція додавання адреси
     '''
     if len(args) < 2:
-        return "Please specify the name and the address."
+        return "Будь ласка, вкажіть ім'я та адресу."
     
     name, address = args[0], " ".join(args[1:])
     try:
