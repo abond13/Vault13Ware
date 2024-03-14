@@ -26,7 +26,7 @@ def input_error(func):
         except AddressFormatError:
             return "Wrong email format."
         except MinArgsQuantityError:
-            return "Wrong email format."
+            return "Not enough parameters for executing this command."
         except NotFoundNameError:
             return "This contact is not found. Please add the contact first."
 
