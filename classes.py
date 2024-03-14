@@ -24,6 +24,18 @@ class AddressFormatError(Exception):
     pass
 
 
+class DictSortable(UserDict):
+    def sort_keys(self) -> dict:
+        """
+        Sort the dictionary through key values (int or datetime, for example)
+        """
+        sorted_dict = {}
+        keys = list(self.data.keys())
+        keys.sort()
+        for key in keys:
+            sorted_dict[key] = self.data[key]
+        return sorted_dict
+
 class Field:
     """
     Базовий клас для полів запису.
@@ -179,7 +191,7 @@ class AddressBook(UserDict):
         Save configuration to YAML file
         """
 
-    def get_birthdays_per_week(self):
+    def get_birthdays(self, quantity: int):
         """
         Функція get_birthdays_per_week шукає в усіх записах атрибут birthday
         i виводить імена іменинників
@@ -190,27 +202,65 @@ class AddressBook(UserDict):
             Monday: Bill Goots, Foo Bar
             Friday: John Smith
         """
+        """
+        Function recieves an AddressBook object and number of days to look ahead.\n
+        Prints out birthdays of contacts within the range of days.
+        Returns nothing.
+        """
+        
+        calendar = {}
         today = datetime.datetime.today().date()
-        weekday_to_name = []
-        for name, record in self.data.items():
-            birthday = record.birthday
-            if not birthday:
+
+        for record in self.data.values():
+            if record.birthday is None:
                 continue
-            birthday_this_year = birthday.replace(year=today.year)
-            if birthday_this_year < today:
-                birthday_this_year = birthday.replace(year=today.year + 1)
-            if birthday_this_year.weekday() == 5:
-                birthday_this_year += datetime.timedelta(days=2)
-            if birthday_this_year.weekday() == 6:
-                birthday_this_year += datetime.timedelta(days=1)
-            delta_days = (birthday_this_year - today).days
-            if delta_days < 7:
-                weekday_to_name.append((delta_days, birthday_this_year.strftime('%A'), name))
-        weekday_to_name.sort()
-        dd_list = defaultdict(list)
-        for delta_days, weekday, name in weekday_to_name:
-            dd_list[weekday].append(name)
-        print('\n'.join([f"{day}: {', '.join(names)}" for day, names in dd_list.items()]))
+            next_birthday = datetime.date(today.year, record.birthday.month, record.birthday.day)
+            if next_birthday < today:
+                next_birthday = next_birthday.replace(year=today.year + 1)
+            delta_days = (next_birthday - today).days
+            if delta_days >= quantity:
+                continue
+            else:
+                
+                # Going to work with the next structure: (dict of dicts)
+                #
+                # {
+                #   'March, 2024' : { 12: ['Brandon','Olivia'], 27: ['Gregor'] }
+                #   'April, 2024' : { 3: ['Viktor'], 14: ['Sofia'], 18: ['Thomas', 'Andrea', 'Magnus'] }                       
+                # }
+
+                # set keys for the outer and inner dictionaries
+                key_outer = next_birthday.replace(day=1)        # This is datetime.date, but we will print out 'March, 2024'
+                key_inner = next_birthday.day
+                name = record.name
+                
+                # if there is no such key - create it!
+                try:
+                    calendar[key_outer]
+                except KeyError:
+                    calendar[key_outer] = {}
+                
+                    # it's time to fill in the inner dictionary:
+                if len(calendar[key_outer]) == 0:
+                    calendar[key_outer][key_inner] = [name] 
+                else:
+                    try:
+                        # if there is already such cell with given month and day - append new name
+                        calendar[key_outer][key_inner].append(name)
+                    except KeyError:
+                        # if there is no such key for inner dictionary - also create it
+                        calendar[key_outer][key_inner] = [name]
+        
+        # Don't forget to sort our dictionaries by date
+        calendar = DictSortable(calendar)
+        calendar = calendar.sort_keys()
+        for key_outer, inner_dict in calendar.items():
+            inner_dict = DictSortable(inner_dict)
+            inner_dict = inner_dict.sort_keys()
+            print(key_outer.strftime("%B, %Y"))
+            for key_inner, name_list in inner_dict.items():
+                print(f"{key_inner}: {", ".join([name.value for name in name_list])}")
+            print()
 
     def __str__(self):
         return 'Address book:\n\t' + '\n\t'.join(record.__str__() for record in self.data.values())
