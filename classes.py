@@ -94,7 +94,6 @@ class Phone(Field):
         +380509876543
         +380(4565)7890001
     """
-
     def __init__(self, phone):
         if not re.fullmatch(r'^(\+[1-9]{1,3})?(\(\d{1,4}\))?\d{6,15}$', phone):
             raise PhoneFormatError
@@ -106,7 +105,6 @@ class Birthday(Field):
     Клас для зберігання дня народження.
     Формат виводу: DD.MM.YYYY
     """
-
     def __init__(self, value):
         super().__init__(value)
         day, month, year = self.value.split('.')
@@ -129,7 +127,6 @@ class Email(Field):
     Клас для зберігання email.
     Email має задоволняти формату login@subdomen.domen:
     """
-
     def __init__(self, email):
         if not re.fullmatch(r'[a-z0-9]{1,10}@[a-z0-9]{1,10}\.[a-z]{2,5}', email):
             raise EmailFormatError
@@ -142,7 +139,6 @@ class Address(Field):
     Імʼя має задоволняти наступним вимогам:
             1. Довжина повинна бути 2+ символів.
     """
-
     def __init__(self, name):
         if not re.fullmatch(r"^.{3,}", name):
             raise NameFormatError
@@ -154,7 +150,6 @@ class Record:
     Клас для зберігання інформації про контакт,
     включаючи ім'я, список телефонів, список Emails, адресу, день народження
     """
-
     def __init__(self, name):
         self.name = Name(name)
         self.phones = []
