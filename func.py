@@ -1,19 +1,13 @@
-from classes import NameFormatError, PhoneFormatError, BirthdayFormatError, EmailFormatError, AddressFormatError, \
-<<<<<<< HEAD
-    NoTextError, NoIdEnteredError, NoIdFoundError
-from classes import Name, Phone, Address, Birthday, Record, AddressBook, NoteBook, Note, Email
-=======
-    NoTextError, NoIdEnteredError, NoIdFoundError, MinArgsQuantityError, NotFoundNameError
-from classes import Record, AddressBook, NoteBook, Note
-
-
-import requests  # API-для запитів
 from datetime import datetime
 import platform
+import requests  # API-для запитів
+from classes import BirthdayFormatError, EmailFormatError, AddressFormatError,\
+                    NameFormatError, PhoneFormatError, NoTextError,\
+                    NoIdEnteredError, NoIdFoundError, MinArgsQuantityError, NotFoundNameError,\
+                    Record, AddressBook, NoteBook, Note
 if platform.system() == "Windows":
     import msvcrt  # для використання функції очикування натискання будь-якої клавіши
 
->>>>>>> 4d90afd62aad2cccb5f51287ae17aa74a0a91141
 
 def input_error(func):
     '''
@@ -166,14 +160,12 @@ def cng_man(args: tuple, book: AddressBook):
     else:
         raise NotFoundNameError
 
+
 @input_error
 def show_man(args: tuple, book: AddressBook):
     '''
     Функція показу даних контакту
     '''
-<<<<<<< HEAD
-    pass # FIXME наповнити кодом #######################
-=======
     PAGE_SIZE = 4  # Кількість контактів, які виводяться на екран за раз #TODO налаштувати константу на бойовому екрані
     os_type = platform.system()
 
@@ -197,20 +189,21 @@ def show_man(args: tuple, book: AddressBook):
 
         counter = 1  # стартове значення лічильника
         for record in book.data.values():
-            print(f'{book.find(record)}')
+            print(record)
             print('----------------')
             if counter >= PAGE_SIZE:
                 if os_type == "Windows":
-                    print(
-                        f'\n                                           --- Press any key to continue ---                                            \n')
+                    print('\n                                           ',
+                          '--- Press any key to continue ---            ',
+                          '                                \n')
                     msvcrt.getch()  # очикування натискання будь-якої клавіши
                 else:  #  очикування натискання клавіши (for Mac&Linux)
-                    input('                                           --- Press Enter key to continue ---                                            ')
+                    input('                                           '+\
+                          '--- Press Enter key to continue ---        '+\
+                          '                                    ')
                 counter = 1
             else:
                 counter += 1
-
->>>>>>> 4d90afd62aad2cccb5f51287ae17aa74a0a91141
 
 @input_error
 def find_man(args: tuple, book: AddressBook):

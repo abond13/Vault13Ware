@@ -1,8 +1,10 @@
-import func
+from datetime import datetime
+import time
+import platform
 from colorama import Fore, Back, Style
 from colorama import just_fix_windows_console
-import time, platform
-from datetime import datetime
+import func
+
 if platform.system() == "Windows":
     import winsound
 
@@ -45,7 +47,7 @@ def greeting():
     print(print_style + "Date / Time: **\n")
     print(print_style + f"{datetime.now().date()}\n")
     print(print_style + f"{datetime.now().time().strftime('%I:%M%p')}\n")
-    print(print_style + f"** Type the name of the command interpreter: COMMAND.COM **")
+    print(print_style + "** Type the name of the command interpreter: COMMAND.COM **")
     print('\n\n\n')
 
     func.hello()
