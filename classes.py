@@ -71,6 +71,10 @@ class Field:
 
     def __str__(self):
         return str(self.value)
+    
+    def __repr__(self):
+        return str(self.value)
+
 
 
 class Name(Field):
@@ -169,13 +173,89 @@ class Record:
             self.phones.append(Phone(phone))
             return True
         return False
+    
+    def change_man(self, new_name):
+        self.name = Name(new_name)
+    
+    def change_phone(self, old_phone, new_phone):
+        for phone in self.phones:
+            if phone.value == old_phone:    
+                self.phones.remove(phone)
+                self.phones.append(Phone(new_phone))
+                return True
+            else:
+                return False
 
-    def remove_phone(self, phone):
-        record = self.find_phone_record(phone)
-        if record:
-            self.phones.remove(record)
+    def delete_phone(self, phone_str):
+        for phone in self.phones:
+            if phone.value == phone_str:    
+                self.phones.remove(phone)
+                return True
+        return False
+
+    def change_email(self, old_email, new_email):
+        for email in self.emails:
+            if email.value == old_email:    
+                self.emails.remove(email)
+                self.emails.append(Email(new_email))
+                return True
+            else:
+                return False
+        
+    def delete_email(self, email_str):
+        for email in self.emails:
+            if email.value == email_str:    
+                self.emails.remove(email)
+                return True
+        return False
+    
+    def change_birthday(self, new_birthday):
+        if self.birthday:
+            self.birthday.date = new_birthday
+            return True
+        else:
+            return False
+
+    def delete_birthday(self):
+        if self.birthday:
+            self.birthday = None
+            return True
+        else:
+            return False
+        
+    def change_address(self, new_address):
+        if self.address:
+            self.address.address = new_address
             return True
         return False
+
+    def delete_address(self):
+        if self.address:
+            self.address = None
+            return True
+        return False
+    
+    def find_phone(self, phone_number):
+        for phone in self.phones:
+            if phone.number == phone_number:
+                return phone
+        return None
+
+    def find_email(self, email_address):
+        for email in self.emails:
+            if email.address == email_address:
+                return email
+        return None
+
+    def find_address(self, address):
+        if self.address and self.address.address == address:
+            return self.address
+        return None
+
+    def find_birthday(self, birthday_date):
+        if self.birthday and self.birthday.date == birthday_date:
+            return self.birthday
+        return None
 
     def edit_phone(self, old_phone, new_phone):
         # Якщо старий телефон існує, і якщо ми успішно додали новий, та якщо старий та новий не співпадають
@@ -379,6 +459,70 @@ class AddressBook(UserDict):  # {Name(name): Record()}
             for key_inner, name_list in inner_dict.items():
                 print(f"{key_inner}: {', '.join([name.value for name in name_list])}")
             print()
+
+    def change_phone(self, new_phone):
+        if self.phone:  # Перевіряємо, чи існує номер телефону
+            self.phone.number = new_phone  # Оновлюємо номер телефону
+            return True
+        else:
+            return False  # Номер телефону не було знайдено
+
+    def delete_phone(self):
+        if self.phone:
+            self.phone = None
+            return True
+        else:
+            return False
+
+    def change_email(self, name, old_email, new_email):
+        return self.data[name].change_email(old_email, new_email)
+
+    def delete_email(self):
+        if self.email:
+            self.email = None
+            return True
+        else:
+            return False
+
+    def change_birthday(self, new_birthday):
+        if self.birthday:
+            self.birthday = new_birthday
+            return True
+        else:
+            return False
+
+    def delete_birthday(self):
+        if self.birthday:
+            self.birthday = None
+            return True
+        else:
+            return False
+
+    def delete_address(self):
+        if self.address:
+            self.address = None
+            return True
+        return False
+    
+    def find_phone(self, name:str):
+        if self.data.get(name):
+            return self.data[name].phones
+        return None
+
+    def find_email(self, name):
+        if self.data.get(name):
+            return self.data[name].emails
+        return None
+
+    def find_address(self, name:str):
+        if self.data.get(name):
+            return self.data[name].address
+        return None
+
+    def find_birthday(self, birthday_date):
+        if self.birthday and self.birthday.date == birthday_date:
+            return self.birthday
+        return None
 
     def __str__(self):
         return 'Address book:\n\t' + '\n\t'.join(record.__str__() for record in self.data.values())

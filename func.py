@@ -1,6 +1,6 @@
 from datetime import datetime
 import platform
-import requests  # API-для запитів
+import requests # API-для запитів
 from classes import BirthdayFormatError, EmailFormatError, AddressFormatError,\
                     NameFormatError, PhoneFormatError, NoTextError,\
                     NoIdEnteredError, NoIdFoundError, MinArgsQuantityError, NotFoundNameError,\
@@ -163,12 +163,27 @@ def cng_man(args: tuple, book: AddressBook):
         raise MinArgsQuantityError
     
     old_name, new_name = args
-    result = book.change_record_name(old_name, new_name)
-    if result:
+    record = book.find(old_name)
+    if record:
+        record.change_man(new_name)
         print(f"Contact name changed from {old_name} to {new_name}.")
     else:
         raise NotFoundNameError
-
+    
+@input_error
+def find_man(args: tuple, book: AddressBook):
+    """
+    Функція пошуку контакту
+    """
+    if len(args) < 1:
+        raise MinArgsQuantityError
+    
+    name = args[0]
+    record = book.find(name)
+    if record:
+        print(record)
+    else:
+        print("Contact not found.")
 
 @input_error
 def show_man(args: tuple, book: AddressBook):
@@ -214,22 +229,6 @@ def show_man(args: tuple, book: AddressBook):
             else:
                 counter += 1
 
-
-@input_error
-def find_man(args: tuple, book: AddressBook):
-    """
-    Функція пошуку контакту
-    """
-    if len(args) < 1:
-        raise MinArgsQuantityError
-    
-    name = args[0]
-    record = book.find(name)
-    if record:
-        print(record)
-    else:
-        print("Contact not found.")
-
 @input_error
 def add_phone(args: tuple, book: AddressBook):
     '''
@@ -273,7 +272,7 @@ def cng_phone(args: tuple, book: AddressBook):
     else:
         raise NotFoundNameError
 
-@input_error
+#@input_error
 def del_phone(args: tuple, book: AddressBook):
     """
     Функція зміни номеру телефону.
@@ -317,7 +316,7 @@ def add_email(args: tuple, book: AddressBook):
         raise NotFoundNameError
 
 
-@input_error
+#@input_error
 def cng_email(args: tuple, book: AddressBook):
     """
     Функція зміни пошти.
@@ -346,10 +345,10 @@ def find_email(args: tuple, book: AddressBook):
     if len(args) < 1:
         raise MinArgsQuantityError
     
-    email_to_find = args[0]
-    found = book.find_by_email(email_to_find)
+    name = args[0]
+    found = book.find_email(name)
     if found:
-        print(f"Contact(s) with email {email_to_find}:")
+        print(f"Contact {name} has email:")
         for record in found:
             print(record)
     else:
@@ -504,12 +503,10 @@ def find_adr(args: tuple, book: AddressBook):
     if len(args) < 1:
         raise MinArgsQuantityError
 
-    address_to_find = " ".join(args)
-    found = book.find_by_address(address_to_find)
+    name = args[0]
+    found = book.find_address(name)
     if found:
-        print(f"Contact(s) with address '{address_to_find}':")
-        for record in found:
-            print(record)
+        print(f"Address for {name}: {found}.")
     else:
         print("Address not found.")
 
