@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from classes import NameFormatError, PhoneFormatError, BirthdayFormatError, EmailFormatError, AddressFormatError, \
 <<<<<<< HEAD
     NoTextError, NoIdEnteredError, NoIdFoundError
@@ -5,6 +6,17 @@ from classes import Name, Phone, Address, Birthday, Record, AddressBook, NoteBoo
 =======
     NoTextError, NoIdEnteredError, NoIdFoundError, MinArgsQuantityError, NotFoundNameError
 from classes import Record, AddressBook, NoteBook, Note
+=======
+from datetime import datetime
+import platform
+import requests  # API-для запитів
+from classes import BirthdayFormatError, EmailFormatError, AddressFormatError,\
+                    NameFormatError, PhoneFormatError, NoTextError,\
+                    NoIdEnteredError, NoIdFoundError, MinArgsQuantityError, NotFoundNameError,\
+                    Record, AddressBook, NoteBook, Note
+if platform.system() == "Windows":
+    import msvcrt  # для використання функції очикування натискання будь-якої клавіши
+
 
 
 import requests  # API-для запитів
@@ -13,7 +25,7 @@ import platform
 if platform.system() == "Windows":
     import msvcrt  # для використання функції очикування натискання будь-якої клавіши
 
->>>>>>> 4d90afd62aad2cccb5f51287ae17aa74a0a91141
+
 
 def input_error(func):
     '''
@@ -78,19 +90,34 @@ def hello():
     Друк сторінки з привітанням. Відображаємо на старті. А також по команді hello.
     '''
     print("\x1b[2J")  # clean the screen
+<<<<<<< HEAD
     print(f'Hail to you, representative of the remnants of humanity, bag of bones!\n')
 
     try:
         ip_address = requests.get('https://api.ipify.org').text
         location = requests.get(f'https://ipinfo.io/{ip_address}?token=746910603a9959').json()
+=======
+    print('Hail to you, representative of the remnants of humanity, bag of bones!\n')
+
+    try:
+        ip_address = requests.get('https://api.ipify.org', timeout=10).text
+        location = requests.get(f'https://ipinfo.io/{ip_address}?token=746910603a9959', timeout=10).json()
+>>>>>>> 5becf1ab98f34ff7938a219bdf1b6a9455942091
         lat = location["loc"].split(',')[0]
         lon = location["loc"].split(',')[1]
         city = location["city"]
         region = location["region"]
         country = location["country"]
+<<<<<<< HEAD
         weather_url = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=63a5ea9311a8d101ec009f9cd3145775&units=metric'
         weather = requests.get(weather_url).json()
         ex_rates = requests.get('https://api.monobank.ua/bank/currency').json()
+=======
+        weather_url = (f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}'
+                      f'&appid=63a5ea9311a8d101ec009f9cd3145775&units=metric')
+        weather = requests.get(weather_url, timeout=10).json()
+        ex_rates = requests.get('https://api.monobank.ua/bank/currency', timeout=10).json()
+>>>>>>> 5becf1ab98f34ff7938a219bdf1b6a9455942091
         for line in ex_rates:
             if line['currencyCodeA'] == 840 and line['currencyCodeB'] == 980:
                 dollar_buy_rate = line['rateBuy']
@@ -99,6 +126,7 @@ def hello():
                 euro_buy_rate = line['rateBuy']
                 euro_sell_rate = line['rateSell']
         # raise ValueError # for imitation of getting the server request answer 'not status '200''
+<<<<<<< HEAD
         print(f"Now is {datetime.now().strftime('%a %d %b %Y, %I:%M%p')}. The best day for fighting for existence!")
         print(f"You are near the place marked on old maps as city: {city}, region: {region}, country: {country}")
         print(f" The conditions for existence in your location is: {weather['main']['temp']} \u00B0C")
@@ -112,6 +140,29 @@ def hello():
     except:  # when the server requests answer is not status '200'
         print(
             'Сommunication satellite disabled by radiation emission. Displaying your location and weather is temporarily unavailable.\n')
+=======
+        print(f"Now is {datetime.now().strftime('%a %d %b %Y, %I:%M%p')}."
+              f" The best day for fighting for existence!")
+        print(f"You are near the place marked on old maps as city:"
+              f" {city}, region: {region}, country: {country}")
+        print(f" The conditions for existence in your location is:"
+              f" {weather['main']['temp']} \u00B0C")
+        print(f"                                       "
+              f"feels like: {weather['main']['feels_like']} \u00B0C")
+        print(f"                                         "
+              f"humidity: {weather['main']['humidity']}%")
+        print(f"                                         "
+              f"pressure: {weather['main']['pressure']} mm m.c.")
+        print(f"                       The forecast for near time:"
+              f" {weather['weather'][0]['description']}")
+        print(f"The WaultTecBank gave now next exchange rate"
+              f" for North American money papers: {dollar_buy_rate}/{dollar_sell_rate},"
+              f" for Europa money papers: {euro_buy_rate}/{euro_sell_rate}\n")
+
+    except requests.ConnectionError:  # when the server requests answer is not status '200'
+        print('Сommunication satellite disabled by radiation emission.',
+              ' Displaying your location and weather is temporarily unavailable.\n')
+>>>>>>> 5becf1ab98f34ff7938a219bdf1b6a9455942091
 
     finally:
         print("How can I help you?\n")
@@ -165,6 +216,10 @@ def cng_man(args: tuple, book: AddressBook):
         print(f"Contact name changed from {old_name} to {new_name}.")
     else:
         raise NotFoundNameError
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5becf1ab98f34ff7938a219bdf1b6a9455942091
 
 @input_error
 def show_man(args: tuple, book: AddressBook):
@@ -172,10 +227,51 @@ def show_man(args: tuple, book: AddressBook):
     Функція показу даних контакту
     '''
 <<<<<<< HEAD
+<<<<<<< HEAD
     pass # FIXME наповнити кодом #######################
 =======
     PAGE_SIZE = 4  # Кількість контактів, які виводяться на екран за раз #TODO налаштувати константу на бойовому екрані
     os_type = platform.system()
+=======
+    PAGE_SIZE = 4  # Кількість контактів, які виводяться на екран за раз #TODO налаштувати константу на бойовому екрані
+    os_type = platform.system()
+
+    if len(args) >= 1:
+        name = args[0]
+        record = book.find(name)
+        if record:
+            print('\nContact profile:')
+            print('----------------')
+            print(f'{record}\n')
+            print('----------------')
+        else:
+            raise NotFoundNameError
+    else:
+        if len(book.data) < 1:
+            print('No contacts')
+            return
+
+        print('\nContact profiles:')
+        print('----------------')
+
+        counter = 1  # стартове значення лічильника
+        for record in book.data.values():
+            print(record)
+            print('----------------')
+            if counter >= PAGE_SIZE:
+                if os_type == "Windows":
+                    print('\n                                           ',
+                          '--- Press any key to continue ---            ',
+                          '                                \n')
+                    msvcrt.getch()  # очикування натискання будь-якої клавіши
+                else:  #  очикування натискання клавіши (for Mac&Linux)
+                    input('                                           '+\
+                          '--- Press Enter key to continue ---        '+\
+                          '                                    ')
+                counter = 1
+            else:
+                counter += 1
+>>>>>>> 5becf1ab98f34ff7938a219bdf1b6a9455942091
 
     if len(args) >= 1:
         name = args[0]
@@ -387,6 +483,7 @@ def add_bday(args: tuple, book: AddressBook):
     record = book.find(name)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 @input_error
 def cng_bday(args: tuple, book: AddressBook):
     """
@@ -423,11 +520,21 @@ def del_bday(args: tuple, book: AddressBook):
             print(f"Birthday deleted for {name}.")
         else:
             print("Error deleting birthday or birthday not set.")
+=======
+    if record:
+        if record.birthday is None:
+            record.add_birthday(new_bday)
+            print(f"{new_bday} is added as birthday for {name}.\n")
+        else:
+            record.add_birthday(new_bday)
+            print(f"Email {new_bday} is updated as birthday to {name}.\n")
+>>>>>>> 5becf1ab98f34ff7938a219bdf1b6a9455942091
     else:
         raise NotFoundNameError
 
 
 @input_error
+<<<<<<< HEAD
 def show_bday(args: tuple, book: AddressBook):
     '''
     Функція виведення днів народження в наперед заданому проміжку
@@ -440,6 +547,59 @@ def show_bday(args: tuple, book: AddressBook):
 
 
 @input_error
+=======
+def cng_bday(args: tuple, book: AddressBook):
+    """
+    Функція зміни дня народження.
+    """
+    if len(args) < 2:
+        raise MinArgsQuantityError
+    
+    name, new_bday = args
+    record = book.find(name)
+    if record:
+        success = record.change_birthday(new_bday)
+        if success:
+            print(f"Birthday updated to {new_bday} for {name}.")
+        else:
+            print("Error updating birthday.")
+    else:
+        raise NotFoundNameError
+
+@input_error
+def del_bday(args: tuple, book: AddressBook):
+    """
+    Функція видалення дня народження.
+    """
+    if len(args) < 1:
+        raise MinArgsQuantityError
+
+    name = args[0]
+    record = book.find(name)
+    if record:
+        success = record.delete_birthday()
+        if success:
+            print(f"Birthday deleted for {name}.")
+        else:
+            print("Error deleting birthday or birthday not set.")
+    else:
+        raise NotFoundNameError
+
+
+@input_error
+def show_bday(args: tuple, book: AddressBook):
+    '''
+    Функція виведення днів народження в наперед заданому проміжку
+    '''
+    try:
+        quantity = int(args[0])
+    except IndexError:
+        quantity = 7
+    book.get_birthdays(quantity)
+
+
+@input_error
+>>>>>>> 5becf1ab98f34ff7938a219bdf1b6a9455942091
 def add_adr(args: tuple, book: AddressBook):
     '''
     Функція додавання адреси
@@ -463,6 +623,7 @@ def add_adr(args: tuple, book: AddressBook):
             print(f"\nAddress {new_address[:ADDRESS_LENGHT]}... is updated as address to {name}.\n")
     else:
         raise NotFoundNameError
+<<<<<<< HEAD
 
 @input_error
 def del_adr(args: tuple, book: AddressBook):
@@ -503,6 +664,57 @@ def find_adr(args: tuple, book: AddressBook):
 
 
 @input_error
+=======
+
+
+@input_error
+def del_adr(args: tuple, book: AddressBook):
+    """
+    Функція видалення адреси.
+    """
+    if len(args) < 1:
+        raise MinArgsQuantityError
+
+    name = args[0]
+    record = book.find(name)
+    if record:
+        success = record.delete_address()
+        if success:
+            print(f"Address deleted for {name}.")
+        else:
+            print("Address not found or already deleted.")
+    else:
+        raise NotFoundNameError
+
+@input_error
+def find_adr(args: tuple, book: AddressBook):
+    """
+    функція пошуку адреси.
+    """
+    if len(args) < 1:
+        raise MinArgsQuantityError
+
+    address_to_find = " ".join(args)
+    found = book.find_by_address(address_to_find)
+    if found:
+        print(f"Contact(s) with address '{address_to_find}':")
+        for record in found:
+            print(record)
+    else:
+        print("Address not found.")
+
+
+
+@input_error
+def save_book(book):
+    '''
+    Виклик зберігання адресної книги у файл
+    '''
+    book.save()
+
+
+@input_error
+>>>>>>> 5becf1ab98f34ff7938a219bdf1b6a9455942091
 def save_book(book):
     '''
     Виклик зберігання адресної книги у файл
