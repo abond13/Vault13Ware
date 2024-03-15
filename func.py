@@ -1,14 +1,15 @@
 from classes import NameFormatError, PhoneFormatError, BirthdayFormatError, EmailFormatError, AddressFormatError, \
     NoTextError, NoIdEnteredError, NoIdFoundError, MinArgsQuantityError, NotFoundNameError
 from classes import Record, AddressBook, NoteBook, Note
-import msvcrt  # для використання функції очикування натискання будь-якої клавіши
+
+#import msvcrt  # для використання функції очикування натискання будь-якої клавіши
 import requests  # API-для запитів
 from datetime import datetime
 
 
 def input_error(func):
     '''
-    Судячи з усього - це декоратор обробки помилок
+    Декоратор обробки помилок
     '''
     def inner(*args, **kwargs):
         try:
@@ -172,7 +173,7 @@ def show_man(args: tuple, book: AddressBook):
             print('----------------')
             if counter >= PAGE_SIZE:
                 print(f'\n                                           --- Press any key to continue ---                                            \n')
-                msvcrt.getch() # очикування натискання будь-якої клавіши
+                # msvcrt.getch() # очикування натискання будь-якої клавіши
                 counter = 1
             else:
                 counter += 1
@@ -289,10 +290,10 @@ def add_bday(args: tuple, book: AddressBook):
 
     if record:
         if record.birthday is None:
-            record.add_bday(new_bday)
+            record.add_birthday(new_bday)
             print(f"{new_bday} is added as birthday for {name}.\n")
         else:
-            record.add_bday(new_bday)
+            record.add_birthday(new_bday)
             print(f"Email {new_bday} is updated as birthday to {name}.\n")
     else:
         raise NotFoundNameError
@@ -326,7 +327,7 @@ def add_adr(args: tuple, book: AddressBook):
         raise MinArgsQuantityError
 
     name = args[0]
-    new_address = args[1]
+    new_address = ' '.join(args[1:])
     record = book.find(name)
 
     if record:
@@ -335,7 +336,7 @@ def add_adr(args: tuple, book: AddressBook):
             print(f"\n{new_address[:ADDRESS_LENGHT]}... is added as address for {name}.\n")
         else:
             record.add_address(new_address)
-            print(f"\nEmail {new_address[:ADDRESS_LENGHT]}... is updated as address to {name}.\n")
+            print(f"\nAddress {new_address[:ADDRESS_LENGHT]}... is updated as address to {name}.\n")
     else:
         raise NotFoundNameError
 
@@ -354,6 +355,14 @@ def find_adr(args):
     Функція пошуку адреси
     '''
     pass  # FIXME наповнити кодом #######################
+
+
+@input_error
+def save_book(book):
+    '''
+    Виклик зберігання адресної книги у файл
+    '''
+    book.save()
 
 
 @input_error
