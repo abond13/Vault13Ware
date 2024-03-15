@@ -315,7 +315,10 @@ def show_bday(args: tuple, book: AddressBook):
     '''
     Функція виведення днів народження в наперед заданому проміжку
     '''
-    quantity = int(args[0])
+    try:
+        quantity = int(args[0])
+    except:
+        quantity = 7
     book.get_birthdays(quantity)
 
 
