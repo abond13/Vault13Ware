@@ -306,7 +306,7 @@ class Record:
                 f"     address: {self.address}\n")
 
 
-class AddressBook(UserDict):  # {Name(name): Record()}
+class AddressBook(UserDict):  # object = { Name(name): Record(Name(name), ...) }
     """
     Клас для зберігання адресної книги
     """
@@ -321,6 +321,11 @@ class AddressBook(UserDict):  # {Name(name): Record()}
 
     def add_record(self, record: Record):
         self.data[record.name.value] = record
+        
+    def change_record(self, old_name: str, new_name: str):
+        self.data[new_name] = self.data.pop(old_name)
+        self.data[new_name].name = Name(new_name)
+        
 
     def delete(self, name):
         if self.data.pop(name, None):
