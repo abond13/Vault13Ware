@@ -140,19 +140,34 @@ def add_man(args: tuple, book: AddressBook):
 
 
 @input_error
-def del_man(args):
-    '''
+def del_man(args: tuple, book: AddressBook):
+    """
     Функція видалення контакту
-    '''
-    pass  # FIXME наповнити кодом #######################
-
+    """
+    if len(args) < 1:
+        raise MinArgsQuantityError
+    
+    name = args[0]
+    result = book.delete_record(name)
+    if result:
+        print(f"Contact {name} deleted successfully.")
+    else:
+        raise NotFoundNameError
 
 @input_error
-def cng_man(args):
-    '''
+def cng_man(args: tuple, book: AddressBook):
+    """
     Функція зміни/оновлення контакту
-    '''
-    pass  # FIXME наповнити кодом #######################
+    """
+    if len(args) < 2:
+        raise MinArgsQuantityError
+    
+    old_name, new_name = args
+    result = book.change_record_name(old_name, new_name)
+    if result:
+        print(f"Contact name changed from {old_name} to {new_name}.")
+    else:
+        raise NotFoundNameError
 
 
 @input_error
@@ -201,12 +216,19 @@ def show_man(args: tuple, book: AddressBook):
 
 
 @input_error
-def find_man(args):
-    '''
+def find_man(args: tuple, book: AddressBook):
+    """
     Функція пошуку контакту
-    '''
-    pass  # FIXME наповнити кодом #######################
-
+    """
+    if len(args) < 1:
+        raise MinArgsQuantityError
+    
+    name = args[0]
+    record = book.find(name)
+    if record:
+        print(record)
+    else:
+        print("Contact not found.")
 
 @input_error
 def add_phone(args: tuple, book: AddressBook):
@@ -233,19 +255,42 @@ def add_phone(args: tuple, book: AddressBook):
 
 
 @input_error
-def cng_phone(args):
+def cng_phone(args: tuple, book: AddressBook):
     '''
     Функція зміни номеру телефону
     '''
-    pass  # FIXME наповнити кодом #######################
-
+    if len(args) < 3:
+        raise MinArgsQuantityError
+    
+    name, old_phone, new_phone = args
+    record = book.find(name)
+    if record:
+        success = record.change_phone(old_phone, new_phone)
+        if success:
+            print(f"Phone number updated from {old_phone} to {new_phone} for {name}.")
+        else:
+            print("Old phone number not found.")
+    else:
+        raise NotFoundNameError
 
 @input_error
-def del_phone(args):
-    '''
-    Функція зміни номеру телефону
-    '''
-    pass  # FIXME наповнити кодом #######################
+def del_phone(args: tuple, book: AddressBook):
+    """
+    Функція зміни номеру телефону.
+    """
+    if len(args) < 2:
+        raise MinArgsQuantityError
+    
+    name, phone = args
+    record = book.find(name)
+    if record:
+        success = record.delete_phone(phone)
+        if success:
+            print(f"Phone number {phone} deleted for {name}.")
+        else:
+            print("Phone number not found.")
+    else:
+        raise NotFoundNameError
 
 
 @input_error
@@ -273,27 +318,62 @@ def add_email(args: tuple, book: AddressBook):
 
 
 @input_error
-def cng_email(args):
-    '''
-    Функція додавання email
-    '''
-    pass  # FIXME наповнити кодом #######################
+def cng_email(args: tuple, book: AddressBook):
+    """
+    Функція зміни пошти.
+    """
+    if len(args) < 3:
+        raise MinArgsQuantityError
+    
+    name, old_email, new_email = args
+    record = book.find(name)
+    if record:
+        success = record.change_email(old_email, new_email)
+        if success:
+            print(f"Email updated from {old_email} to {new_email} for {name}.")
+        else:
+            print("Old email not found.")
+    else:
+        raise NotFoundNameError
+
 
 
 @input_error
-def find_email(args):
-    '''
-    Функція пошуку email
-    '''
-    pass  # FIXME наповнити кодом #######################
+def find_email(args: tuple, book: AddressBook):
+    """
+    Функція пошуку пошти.
+    """
+    if len(args) < 1:
+        raise MinArgsQuantityError
+    
+    email_to_find = args[0]
+    found = book.find_by_email(email_to_find)
+    if found:
+        print(f"Contact(s) with email {email_to_find}:")
+        for record in found:
+            print(record)
+    else:
+        print("Email not found.")
 
 
 @input_error
-def del_email(args):
-    '''
-    Функція видаленя email
-    '''
-    pass  # FIXME наповнити кодом #######################
+def del_email(args: tuple, book: AddressBook):
+    """
+    Функція видалення пошти.
+    """
+    if len(args) < 2:
+        raise MinArgsQuantityError
+    
+    name, email = args
+    record = book.find(name)
+    if record:
+        success = record.delete_email(email)
+        if success:
+            print(f"Email {email} deleted for {name}.")
+        else:
+            print("Email not found.")
+    else:
+        raise NotFoundNameError
 
 
 @input_error
@@ -321,11 +401,42 @@ def add_bday(args: tuple, book: AddressBook):
 
 
 @input_error
-def del_bday(args):
-    '''
-    Функція видалення дня народження
-    '''
-    pass  # FIXME наповнити кодом #######################
+def cng_bday(args: tuple, book: AddressBook):
+    """
+    Функція зміни дня народження.
+    """
+    if len(args) < 2:
+        raise MinArgsQuantityError
+    
+    name, new_bday = args
+    record = book.find(name)
+    if record:
+        success = record.change_birthday(new_bday)
+        if success:
+            print(f"Birthday updated to {new_bday} for {name}.")
+        else:
+            print("Error updating birthday.")
+    else:
+        raise NotFoundNameError
+
+@input_error
+def del_bday(args: tuple, book: AddressBook):
+    """
+    Функція видалення дня народження.
+    """
+    if len(args) < 1:
+        raise MinArgsQuantityError
+
+    name = args[0]
+    record = book.find(name)
+    if record:
+        success = record.delete_birthday()
+        if success:
+            print(f"Birthday deleted for {name}.")
+        else:
+            print("Error deleting birthday or birthday not set.")
+    else:
+        raise NotFoundNameError
 
 
 @input_error
@@ -367,19 +478,49 @@ def add_adr(args: tuple, book: AddressBook):
 
 
 @input_error
-def del_adr(args):
-    '''
-    Функція видалення адреси
-    '''
-    pass  # FIXME наповнити кодом #######################
+def del_adr(args: tuple, book: AddressBook):
+    """
+    Функція видалення адреси.
+    """
+    if len(args) < 1:
+        raise MinArgsQuantityError
+
+    name = args[0]
+    record = book.find(name)
+    if record:
+        success = record.delete_address()
+        if success:
+            print(f"Address deleted for {name}.")
+        else:
+            print("Address not found or already deleted.")
+    else:
+        raise NotFoundNameError
+
+@input_error
+def find_adr(args: tuple, book: AddressBook):
+    """
+    функція пошуку адреси.
+    """
+    if len(args) < 1:
+        raise MinArgsQuantityError
+
+    address_to_find = " ".join(args)
+    found = book.find_by_address(address_to_find)
+    if found:
+        print(f"Contact(s) with address '{address_to_find}':")
+        for record in found:
+            print(record)
+    else:
+        print("Address not found.")
+
 
 
 @input_error
-def find_adr(args):
+def save_book(book):
     '''
-    Функція пошуку адреси
+    Виклик зберігання адресної книги у файл
     '''
-    pass  # FIXME наповнити кодом #######################
+    book.save()
 
 
 @input_error
