@@ -1,6 +1,9 @@
 from colorama import Fore, Back, Style
 from colorama import just_fix_windows_console
-import time, winsound, platform
+import time, platform
+if platform.system() == "Windows":
+    import winsound
+
 
 def display(today_style_string: str):
 
