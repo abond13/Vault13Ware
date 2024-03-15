@@ -2,7 +2,7 @@ from classes import NameFormatError, PhoneFormatError, BirthdayFormatError, Emai
     NoTextError, NoIdEnteredError, NoIdFoundError, MinArgsQuantityError, NotFoundNameError
 from classes import Record, AddressBook, NoteBook, Note
 
-#import msvcrt  # для використання функції очикування натискання будь-якої клавіши
+# import msvcrt  # для використання функції очикування натискання будь-якої клавіши
 import requests  # API-для запитів
 from datetime import datetime
 
@@ -11,6 +11,7 @@ def input_error(func):
     '''
     Декоратор обробки помилок
     '''
+
     def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
@@ -40,6 +41,7 @@ def input_error(func):
             print("Not enough parameters for executing this command.")
         except NotFoundNameError:
             print("This contact is not found. Please add the contact first.")
+
     return inner
 
 
@@ -89,17 +91,17 @@ def hello():
                 euro_buy_rate = line['rateBuy']
                 euro_sell_rate = line['rateSell']
         # raise ValueError # for imitation of getting the server request answer 'not status '200''
-        print(f'Now is {datetime.now().strftime('%a %d %b %Y, %I:%M%p')}. The best day for fighting for existence!')
-        print(f'You are near the place marked on old maps as city: {city}, region: {region}, country: {country}')
-        print(f' The conditions for existence in your location is: {weather['main']['temp']} \u00B0C')
-        print(f'                                       feels like: {weather['main']['feels_like']} \u00B0C')
-        print(f'                                         humidity: {weather['main']['humidity']}%')
-        print(f'                                         pressure: {weather['main']['pressure']} mm m.c.')
-        print(f'                       The forecast for near time: {weather['weather'][0]['description']}')
+        print(f"Now is {datetime.now().strftime('%a %d %b %Y, %I:%M%p')}. The best day for fighting for existence!")
+        print(f"You are near the place marked on old maps as city: {city}, region: {region}, country: {country}")
+        print(f" The conditions for existence in your location is: {weather['main']['temp']} \u00B0C")
+        print(f"                                       feels like: {weather['main']['feels_like']} \u00B0C")
+        print(f"                                         humidity: {weather['main']['humidity']}%")
+        print(f"                                         pressure: {weather['main']['pressure']} mm m.c.")
+        print(f"                       The forecast for near time: {weather['weather'][0]['description']}")
         print(
-            f'The WaultTecBank gave now next exchange rate for North American money papers: {dollar_buy_rate}/{dollar_sell_rate}, for Europa money papers: {euro_buy_rate}/{euro_sell_rate}\n')
+            f"The WaultTecBank gave now next exchange rate for North American money papers: {dollar_buy_rate}/{dollar_sell_rate}, for Europa money papers: {euro_buy_rate}/{euro_sell_rate}\n")
 
-    except: # when the server requests answer is not status '200'
+    except:  # when the server requests answer is not status '200'
         print(
             'Сommunication satellite disabled by radiation emission. Displaying your location and weather is temporarily unavailable.\n')
 
@@ -147,7 +149,7 @@ def show_man(args: tuple, book: AddressBook):
     '''
     Функція показу даних контакту
     '''
-    PAGE_SIZE = 4 # Кількість контактів, які виводяться на екран за раз #TODO налаштувати константу на бойовому екрані
+    PAGE_SIZE = 4  # Кількість контактів, які виводяться на екран за раз #TODO налаштувати константу на бойовому екрані
 
     if len(args) >= 1:
         name = args[0]
@@ -167,12 +169,13 @@ def show_man(args: tuple, book: AddressBook):
         print('\nContact profiles:')
         print('----------------')
 
-        counter = 1 # стартове значення лічильника
+        counter = 1  # стартове значення лічильника
         for record in book.data.values():
             print(f'{book.find(record)}')
             print('----------------')
             if counter >= PAGE_SIZE:
-                print(f'\n                                           --- Press any key to continue ---                                            \n')
+                print(
+                    f'\n                                           --- Press any key to continue ---                                            \n')
                 # msvcrt.getch() # очикування натискання будь-якої клавіши
                 counter = 1
             else:
@@ -373,7 +376,7 @@ def add_note(args, notes: NoteBook):
     if len(args) == 0:
         raise NoTextError()
 
-    text = args[0]
+    text = " ".join(args)
     note = Note(text)
     notes.add_note(note)
     print("Note added")
@@ -382,7 +385,7 @@ def add_note(args, notes: NoteBook):
 @input_error
 def del_note(args, notes: NoteBook):
     '''
-    Функція додавання нотатки
+    Функція видалення нотатки
     '''
     if len(args) == 0:
         raise NoIdEnteredError()
@@ -396,7 +399,7 @@ def del_note(args, notes: NoteBook):
 @input_error
 def find_note(args, notes: NoteBook):
     '''
-    Функція додавання нотатки
+    Функція пошуку в нотатках за текстом
     '''
     if len(args) == 0:
         raise NoTextError()
@@ -412,7 +415,7 @@ def find_note(args, notes: NoteBook):
 @input_error
 def show_note(args, notes: NoteBook):
     '''
-    Функція додавання нотатки
+    Функція виведення нотатки за її номером
     '''
     if len(args) == 0:
         raise NoIdEnteredError()
@@ -422,3 +425,42 @@ def show_note(args, notes: NoteBook):
         print(note)
     else:
         raise NoIdFoundError()
+
+
+@input_error
+def find_tag(args, notes: NoteBook):
+    '''
+    Функція пошуку за тегом
+    '''
+    if len(args) == 0:
+        raise NoTextError()
+    teg = args[0]
+    found_notes = notes.find_notes_by_teg(teg)
+    if len(found_notes) == 0:
+        print("No notes found")
+    else:
+        print("\n----\n".join(
+            map(lambda note_item: f"{note_item[0]}: {note_item[1].short_str()}", found_notes.items())))
+
+
+def show_sorted_tags(notes: NoteBook):
+    '''
+    Функція виведення всіх тегів за алфавітом.
+    '''
+    tags_dict = notes.get_all_tags()
+    if len(tags_dict) == 0:
+        print("Notebook is empty")
+        return
+    without_tags = tags_dict.pop("#", None)
+    if without_tags:
+        print(f"Without tags: {', '.join(without_tags)}")
+    for tag in sorted(tags_dict.keys(), key=str.lower):
+        print(f"Tag: {tag}, notes: {', '.join(tags_dict[tag])}")
+
+
+@input_error
+def save_notes(notes: NoteBook):
+    '''
+    Виклик зберігання нотаток у файл
+    '''
+    notes.save()

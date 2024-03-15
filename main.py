@@ -11,7 +11,6 @@ def main():
     # ініціалізація
     book = AddressBook()
     notes = NoteBook()
-    notes.load()
     features.greeting()
 
     # work cycle
@@ -104,15 +103,23 @@ def main():
 
         elif command == "add-note":
             func.add_note(args, notes)
+            func.save_notes(notes)
 
         elif command == "del-note":
             func.del_note(args, notes)
+            func.save_notes(notes)
 
         elif command == "find-note":
             func.find_note(args, notes)
 
         elif command == "show-note":
             func.show_note(args, notes)
+
+        elif command == "find-tag":
+            func.find_tag(args, notes)
+
+        elif command == "show-sorted-tags":
+            func.show_sorted_tags(notes)
 
         else:
             print("Invalid command. Type 'help' for get a list of commands.")
