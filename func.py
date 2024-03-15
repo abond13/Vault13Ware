@@ -148,7 +148,7 @@ def del_man(args: tuple, book: AddressBook):
         raise MinArgsQuantityError
     
     name = args[0]
-    result = book.delete_record(name)
+    result = book.delete(name)
     if result:
         print(f"Contact {name} deleted successfully.")
     else:

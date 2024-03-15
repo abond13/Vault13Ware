@@ -226,7 +226,7 @@ class Record:
                 f"     address: {self.address}\n")
 
 
-class AddressBook(UserDict):
+class AddressBook(UserDict):  # {Name(name): Record()}
     """
     Клас для зберігання адресної книги
     """
