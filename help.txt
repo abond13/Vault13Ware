@@ -1,0 +1,26 @@
+Command syntax:
+
+help                                          : show command syntax
+hello                                         : show date, time, location, weather with forecast, rates for papers
+add-man	<name>	                              : add contact with <name> name
+del-man	<name>	                              : delete contact with <name> name
+cng-man	<old-name> <new-name>                 : change contact name from <old-name> to <new-name>
+show-man [<name>]		                      : show all contacts data, with <name> show contact data of <name> only
+find-man <search_string>	                  : find all contacts with <search_string> in name
+add-phone <name> <phone1> [<phone2>]          : add phone number <phone1> for contact <name>, can add some numbers
+cng-phone <name> <old-phone> <new-phone>      : change phone number from <old-phone> to <new-phone> for contact <name>
+del-phone <name> <phone>                      : delete phone number <phone> for contact <name>
+add-email <name> <email1> [<email2>]          : add email <email1> for contact <name>, can add some emails
+cng-email <name> <old-email> <new-email>      : change email from <old-email> to <new-email> for contact <name>
+find-email <search-string>                    : find all contacts with <search-string> in emails
+del-email <name> <email>                      : delete <email> email for contact <name>
+add-bday <name> <birth-date>                  : add/update birthday <birth-date> for contact <name>
+del-bday <name>                               : delete birthday <birth-date> for contact <name>
+show-bday [<day-scope>]                       : show birthday of contacts for next <day-scope> days, default 7 days
+add-adr	<name> <address-text>                 : add/update address <address-text> for contact <name>
+del-adr	<name>                                : delete address <address-text> for contact <name>
+find-adr <search-string>                      : find all contacts with <search-string> in address
+add-note <note-text>                          : add <note-text> note
+del-note <note-number>                        : delete <note-number> note
+find-note <search-string>                     : find all notes with <search-string> in note
+show-note <note-number>                       : show note with <note-number>
