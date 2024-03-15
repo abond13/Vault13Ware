@@ -41,7 +41,8 @@ def greeting():
 
     print('\n\n\n')
     print(print_style + "Welcome to Personal Information Processor PIP-Boy-Bot-3000!\n")
-    print(print_style + "VaultTec Personal computer Copyright(C) 1981, 1982, 1983, 1984 by VaultTec Corporation\n")
+    print(print_style + "VaultTec Personal computer Copyright(C) 1981, 1982, 1983, 1984" +\
+                        " by VaultTec Corporation\n")
     print(print_style + "640 K RAM\n")
     print(print_style + "** CMOS]\n")
     print(print_style + "Date / Time: **\n")
