@@ -39,11 +39,14 @@ class NoIdEnteredError(Exception):
 class NoIdFoundError(Exception):
     pass
 
+
 class MinArgsQuantityError(Exception):
     pass
 
+
 class NotFoundNameError(Exception):
     pass
+
 
 class DictSortable(UserDict):
     def sort_keys(self) -> dict:
@@ -210,7 +213,6 @@ class Record:
         MAX_ADDRESS_LENGTH = 250
         self.address = Address(new_address[:MAX_ADDRESS_LENGTH])
 
-
     def __str__(self):
         return (f"Contact name: {self.name.value}, \n"
                 f"    birthday: {self.birthday}, \n"
@@ -223,6 +225,7 @@ class AddressBook(UserDict):
     """
     Клас для зберігання адресної книги
     """
+
     def __init__(self):
         super().__init__()
         self.filename = './.address_book.json'
@@ -292,7 +295,7 @@ class AddressBook(UserDict):
             filename = self.filename
         book_json = json.dumps(self.data, default=lambda o: o.__dict__, indent=4)
         with tempfile.NamedTemporaryFile('w', encoding="utf-8",
-                dir='.', prefix=filename+'~', delete=False) as tf:
+                                         dir='.', prefix=filename + '~', delete=False) as tf:
             tf.write(book_json)
         # Fix for Windows: os.rename can be executed when tf is closed
         try:
@@ -376,14 +379,15 @@ class AddressBook(UserDict):
         return 'Address book:\n\t' + '\n\t'.join(record.__str__() for record in self.data.values())
 
 
-class Note:
+class Note(Field):
 
-    def __init__(self, text: str):
-        self.raw_text = text
+    def __init__(self, value: str):
+        super().__init__(value)
         self.title = ""
         self.body = ""
-        self.tags = []  # todo заповнити пізніше
+        self.tags = []
         self.__extract_title_and_body()
+        self.__extract_tags()
 
     def __extract_title_and_body(self):
         """
@@ -391,21 +395,29 @@ class Note:
         """
         start_symbols = '<<'
         end_symbols = '>>'
-        start_index = self.raw_text.find(start_symbols)
-        end_index = self.raw_text.find(end_symbols)
+        start_index = self.value.find(start_symbols)
+        end_index = self.value.find(end_symbols)
 
         if start_index == 0 and end_index != -1:
-            self.title = self.raw_text[len(start_symbols):end_index]
-            self.body = self.raw_text[end_index + len(end_symbols):]
+            self.title = self.value[len(start_symbols):end_index]
+            self.body = self.value[end_index + len(end_symbols):]
         else:
             self.title = ""
-            self.body = self.raw_text
+            self.body = self.value
+
+    def __extract_tags(self):
+        matches = re.findall(r'#[A-z\d_]+', self.value)
+        for match in matches:
+            self.tags.append(match[1:])
 
     def __str__(self):
+        result = ""
         if self.title:
-            return f'Title: <<{self.title}>>\nBody: {self.body}'
-        else:
-            return f'Body: {self.body}'
+            result += f'Title: <<{self.title}>>\n'
+        result += f'Body: {self.body}'
+        if len(self.tags) > 0:
+            result += f'\nTags: {", ".join(self.tags)}'
+        return result
 
     def short_str(self):
         if self.title:
@@ -419,9 +431,60 @@ class Note:
 class NoteBook(UserDict):
     id = 0
 
-    def load(self):
-        # TODO
-        pass
+    def __init__(self):
+        super().__init__()
+        self.filename = './.note_book.json'
+        self.load(self.filename)
+
+    def load(self, filename=None):
+        """
+        Зчитування даних з JSON файлу і створення нотаток (Record)
+        для даного екземпляру NoteBook.
+        """
+        if not filename:
+            filename = self.filename
+        try:
+            with open(filename, "r", encoding="utf-8") as book_file:
+                notes_dict = json.load(book_file)
+        except OSError:
+            # Файла з записами немає, тихо виходимо
+            return
+        except json.JSONDecodeError:
+            print(f"Address book JSON file {filename} is broken.")
+            return
+
+        for note_id_str, note_text in notes_dict.items():
+            try:
+                if type(note_id_str) == str and type(note_text) == str:
+                    note_id = int(note_id_str)
+                    note = Note(note_text)
+                    self[note_id] = note
+                    if note_id > NoteBook.id:
+                        NoteBook.id = note_id + 1
+            except ValueError:
+                continue
+
+    def save(self, filename=None):
+        """
+        Зберігання всіх нотаток (Note) даного екземпляра NoteBook в JSON файл.
+        Додатково використовується проміжний TMP файл для запобігання
+        втрати даних під час відкриття файла на запис, але без подальшого запису
+        у випадку нештатної ситуації.
+        """
+        if not filename:
+            filename = self.filename
+        to_store = {k: v.value for k, v in self.data.items()}
+        notes_json = json.dumps(to_store, default=lambda o: o.__dict__, indent=4)
+        with tempfile.NamedTemporaryFile('w', encoding="utf-8",
+                                         dir='.', prefix=filename + '~', delete=False) as tf:
+            tf.write(notes_json)
+        # Fix for Windows: os.rename can be executed when tf is closed
+        try:
+            if os.path.exists(filename):
+                os.remove(filename)
+            os.rename(tf.name, filename)
+        except OSError as error:
+            print(error)
 
     def add_note(self, note: Note):
         self.data[NoteBook.id] = note
@@ -435,10 +498,28 @@ class NoteBook(UserDict):
     def find_notes_by_text(self, text):
         result = {}
         for note_id, note in self.data.items():
-            if text in note.raw_text:
+            if text in note.value:
                 result[note_id] = note
 
         return result
 
     def find_note_by_id(self, id_to_find):
         return self.data.get(id_to_find, None)
+
+    def get_all_tags(self):
+        result = defaultdict(list)
+        for note_id, note in self.data.items():
+            if len(note.tags) == 0:
+                result["#"].append(str(note_id))
+            else:
+                for tag in note.tags:
+                    result[tag].append(str(note_id))
+        return result
+
+    def find_notes_by_teg(self, tag):
+        result = {}
+        for note_id, note in self.data.items():
+            if tag in note.tags:
+                result[note_id] = note
+
+        return result

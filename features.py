@@ -1,4 +1,5 @@
 import func
+
 from colorama import Fore, Back, Style
 from colorama import just_fix_windows_console
 import time, platform
