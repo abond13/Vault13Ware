@@ -1,4 +1,4 @@
 .gitignore
 .vs
 __pycache__
-.*.json
+.*.json*
