@@ -400,7 +400,7 @@ def cng_bday(args: tuple, book: AddressBook):
     if record:
         success = record.change_birthday(new_bday)
         if success:
-            print(f"Birthday updated to {new_bday} for {name}.")
+            print(f"Birthday updated to {new_bday} for {name}")
         else:
             print("Error updating birthday.")
     else:
@@ -410,6 +410,7 @@ def cng_bday(args: tuple, book: AddressBook):
 def del_bday(args: tuple, book: AddressBook):
     """
     Функція видалення дня народження.
+    
     """
     if len(args) < 1:
         raise MinArgsQuantityError
