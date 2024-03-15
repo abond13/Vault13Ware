@@ -59,8 +59,8 @@ def goodbye():
     Відображення фічі ФінальнаЗаставка
     '''
     print_style = Fore.GREEN + Back.BLACK + Style.BRIGHT
-    print(
-        print_style + "Good bye! I wish you to survive in this beautiful world! See you next time!\n")
+    print(print_style + "Good bye! I wish you to survive in this beautiful world!" +\
+                        " See you next time!\n")
     print(print_style + 'C:\> exit\n**C:\>**\nC:> shutdown /r /t 0')
 
     print(Style.RESET_ALL)  # відновлення кольорів терміналу
