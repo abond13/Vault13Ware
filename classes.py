@@ -258,6 +258,7 @@ class AddressBook(UserDict):
             with open(filename, "r", encoding="utf-8") as book_file:
                 book_dict = json.load(book_file)
         except OSError:
+            # Файла з записами немає, тихо виходимо
             return
         except json.JSONDecodeError:
             print(f"Address book JSON file {filename} is broken.")
@@ -298,7 +299,11 @@ class AddressBook(UserDict):
         with tempfile.NamedTemporaryFile('w', encoding="utf-8",
                 dir='.', prefix=filename+'~', delete=False) as tf:
             tf.write(book_json)
+        # Fix for Windows: os.rename can be executed when tf is closed 
+        try:
             os.rename(tf.name, filename)
+        except OSError as error:
+            print(error)
 
     def get_birthdays(self, quantity: int):
         """
