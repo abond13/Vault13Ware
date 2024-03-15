@@ -313,9 +313,10 @@ def del_bday(args):
 @input_error
 def show_bday(args: tuple, book: AddressBook):
     '''
-    Функція видалення дня народження
+    Функція виведення днів народження в наперед заданому проміжку
     '''
-    quantity = args[0]
+    quantity = int(args[0])
+    book.get_birthdays(quantity)
 
 
 @input_error
