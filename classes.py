@@ -299,8 +299,10 @@ class AddressBook(UserDict):
         with tempfile.NamedTemporaryFile('w', encoding="utf-8",
                 dir='.', prefix=filename+'~', delete=False) as tf:
             tf.write(book_json)
-        # Fix for Windows: os.rename can be executed when tf is closed 
+        # Fix for Windows: os.rename can be executed when tf is closed
         try:
+            if os.path.exists(filename):
+                os.remove(filename)
             os.rename(tf.name, filename)
         except OSError as error:
             print(error)
