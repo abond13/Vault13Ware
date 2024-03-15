@@ -2,9 +2,12 @@ from classes import NameFormatError, PhoneFormatError, BirthdayFormatError, Emai
     NoTextError, NoIdEnteredError, NoIdFoundError, MinArgsQuantityError, NotFoundNameError
 from classes import Record, AddressBook, NoteBook, Note
 
-# import msvcrt  # для використання функції очикування натискання будь-якої клавіши
+
 import requests  # API-для запитів
 from datetime import datetime
+import platform
+if platform.system() == "Windows":
+    import msvcrt  # для використання функції очикування натискання будь-якої клавіши
 
 
 def input_error(func):
@@ -150,6 +153,7 @@ def show_man(args: tuple, book: AddressBook):
     Функція показу даних контакту
     '''
     PAGE_SIZE = 4  # Кількість контактів, які виводяться на екран за раз #TODO налаштувати константу на бойовому екрані
+    os_type = platform.system()
 
     if len(args) >= 1:
         name = args[0]
@@ -174,9 +178,12 @@ def show_man(args: tuple, book: AddressBook):
             print(f'{book.find(record)}')
             print('----------------')
             if counter >= PAGE_SIZE:
-                print(
-                    f'\n                                           --- Press any key to continue ---                                            \n')
-                # msvcrt.getch() # очикування натискання будь-якої клавіши
+                if os_type == "Windows":
+                    print(
+                        f'\n                                           --- Press any key to continue ---                                            \n')
+                    msvcrt.getch()  # очикування натискання будь-якої клавіши
+                else:  #  очикування натискання клавіши (for Mac&Linux)
+                    input('                                           --- Press Enter key to continue ---                                            ')
                 counter = 1
             else:
                 counter += 1
