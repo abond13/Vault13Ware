@@ -326,7 +326,6 @@ class AddressBook(UserDict):  # object = { Name(name): Record(Name(name), ...) }
         self.data[new_name] = self.data.pop(old_name)
         self.data[new_name].name = Name(new_name)
         
-
     def delete(self, name):
         if self.data.pop(name, None):
             return True
