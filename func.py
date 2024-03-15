@@ -165,7 +165,7 @@ def cng_man(args: tuple, book: AddressBook):
     old_name, new_name = args
     record = book.find(old_name)
     if record:
-        record.change_man(new_name)
+        book.change_record(old_name, new_name)
         print(f"Contact name changed from {old_name} to {new_name}.")
     else:
         raise NotFoundNameError
@@ -220,8 +220,8 @@ def show_man(args: tuple, book: AddressBook):
                     print('\n                                           ',
                           '--- Press any key to continue ---            ',
                           '                                \n')
-                    msvcrt.getch()  # очикування натискання будь-якої клавіши
-                else:  #  очикування натискання клавіши (for Mac&Linux)
+                    msvcrt.getch()  # очікування натискання будь-якої клавіши
+                else:  #  очікування натискання клавіши (for Mac&Linux)
                     input('                                           '+\
                           '--- Press Enter key to continue ---        '+\
                           '                                    ')
