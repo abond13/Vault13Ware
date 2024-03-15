@@ -1,11 +1,10 @@
-from classes import NameFormatError, PhoneFormatError, BirthdayFormatError, EmailFormatError, AddressFormatError, \
-    NoTextError, NoIdEnteredError, NoIdFoundError, MinArgsQuantityError, NotFoundNameError
-from classes import Record, AddressBook, NoteBook, Note
-
-
-import requests  # API-для запитів
 from datetime import datetime
 import platform
+import requests  # API-для запитів
+from classes import BirthdayFormatError, EmailFormatError, AddressFormatError,\
+                    NameFormatError, PhoneFormatError, NoTextError,\
+                    NoIdEnteredError, NoIdFoundError, MinArgsQuantityError, NotFoundNameError,\
+                    Record, AddressBook, NoteBook, Note
 if platform.system() == "Windows":
     import msvcrt  # для використання функції очикування натискання будь-якої клавіши
 
@@ -73,19 +72,20 @@ def hello():
     Друк сторінки з привітанням. Відображаємо на старті. А також по команді hello.
     '''
     print("\x1b[2J")  # clean the screen
-    print(f'Hail to you, representative of the remnants of humanity, bag of bones!\n')
+    print('Hail to you, representative of the remnants of humanity, bag of bones!\n')
 
     try:
-        ip_address = requests.get('https://api.ipify.org').text
-        location = requests.get(f'https://ipinfo.io/{ip_address}?token=746910603a9959').json()
+        ip_address = requests.get('https://api.ipify.org', timeout=10).text
+        location = requests.get(f'https://ipinfo.io/{ip_address}?token=746910603a9959', timeout=10).json()
         lat = location["loc"].split(',')[0]
         lon = location["loc"].split(',')[1]
         city = location["city"]
         region = location["region"]
         country = location["country"]
-        weather_url = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=63a5ea9311a8d101ec009f9cd3145775&units=metric'
-        weather = requests.get(weather_url).json()
-        ex_rates = requests.get('https://api.monobank.ua/bank/currency').json()
+        weather_url = (f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}'
+                      f'&appid=63a5ea9311a8d101ec009f9cd3145775&units=metric')
+        weather = requests.get(weather_url, timeout=10).json()
+        ex_rates = requests.get('https://api.monobank.ua/bank/currency', timeout=10).json()
         for line in ex_rates:
             if line['currencyCodeA'] == 840 and line['currencyCodeB'] == 980:
                 dollar_buy_rate = line['rateBuy']
@@ -94,19 +94,27 @@ def hello():
                 euro_buy_rate = line['rateBuy']
                 euro_sell_rate = line['rateSell']
         # raise ValueError # for imitation of getting the server request answer 'not status '200''
-        print(f"Now is {datetime.now().strftime('%a %d %b %Y, %I:%M%p')}. The best day for fighting for existence!")
-        print(f"You are near the place marked on old maps as city: {city}, region: {region}, country: {country}")
-        print(f" The conditions for existence in your location is: {weather['main']['temp']} \u00B0C")
-        print(f"                                       feels like: {weather['main']['feels_like']} \u00B0C")
-        print(f"                                         humidity: {weather['main']['humidity']}%")
-        print(f"                                         pressure: {weather['main']['pressure']} mm m.c.")
-        print(f"                       The forecast for near time: {weather['weather'][0]['description']}")
-        print(
-            f"The WaultTecBank gave now next exchange rate for North American money papers: {dollar_buy_rate}/{dollar_sell_rate}, for Europa money papers: {euro_buy_rate}/{euro_sell_rate}\n")
+        print(f"Now is {datetime.now().strftime('%a %d %b %Y, %I:%M%p')}."
+              f" The best day for fighting for existence!")
+        print(f"You are near the place marked on old maps as city:"
+              f" {city}, region: {region}, country: {country}")
+        print(f" The conditions for existence in your location is:"
+              f" {weather['main']['temp']} \u00B0C")
+        print(f"                                       "
+              f"feels like: {weather['main']['feels_like']} \u00B0C")
+        print(f"                                         "
+              f"humidity: {weather['main']['humidity']}%")
+        print(f"                                         "
+              f"pressure: {weather['main']['pressure']} mm m.c.")
+        print(f"                       The forecast for near time:"
+              f" {weather['weather'][0]['description']}")
+        print(f"The WaultTecBank gave now next exchange rate"
+              f" for North American money papers: {dollar_buy_rate}/{dollar_sell_rate},"
+              f" for Europa money papers: {euro_buy_rate}/{euro_sell_rate}\n")
 
-    except:  # when the server requests answer is not status '200'
-        print(
-            'Сommunication satellite disabled by radiation emission. Displaying your location and weather is temporarily unavailable.\n')
+    except requests.ConnectionError:  # when the server requests answer is not status '200'
+        print('Сommunication satellite disabled by radiation emission.',
+              ' Displaying your location and weather is temporarily unavailable.\n')
 
     finally:
         print("How can I help you?\n")
@@ -175,15 +183,18 @@ def show_man(args: tuple, book: AddressBook):
 
         counter = 1  # стартове значення лічильника
         for record in book.data.values():
-            print(f'{book.find(record)}')
+            print(record)
             print('----------------')
             if counter >= PAGE_SIZE:
                 if os_type == "Windows":
-                    print(
-                        f'\n                                           --- Press any key to continue ---                                            \n')
+                    print('\n                                           ',
+                          '--- Press any key to continue ---            ',
+                          '                                \n')
                     msvcrt.getch()  # очикування натискання будь-якої клавіши
                 else:  #  очикування натискання клавіши (for Mac&Linux)
-                    input('                                           --- Press Enter key to continue ---                                            ')
+                    input('                                           '+\
+                          '--- Press Enter key to continue ---        '+\
+                          '                                    ')
                 counter = 1
             else:
                 counter += 1
@@ -324,7 +335,7 @@ def show_bday(args: tuple, book: AddressBook):
     '''
     try:
         quantity = int(args[0])
-    except:
+    except IndexError:
         quantity = 7
     book.get_birthdays(quantity)
 

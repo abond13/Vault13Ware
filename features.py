@@ -1,8 +1,10 @@
-import func
+from datetime import datetime
+import time
+import platform
 from colorama import Fore, Back, Style
 from colorama import just_fix_windows_console
-import time, platform
-from datetime import datetime
+import func
+
 if platform.system() == "Windows":
     import winsound
 
@@ -39,13 +41,14 @@ def greeting():
 
     print('\n\n\n')
     print(print_style + "Welcome to Personal Information Processor PIP-Boy-Bot-3000!\n")
-    print(print_style + "VaultTec Personal computer Copyright(C) 1981, 1982, 1983, 1984 by VaultTec Corporation\n")
+    print(print_style + "VaultTec Personal computer Copyright(C) 1981, 1982, 1983, 1984" +\
+                        " by VaultTec Corporation\n")
     print(print_style + "640 K RAM\n")
     print(print_style + "** CMOS]\n")
     print(print_style + "Date / Time: **\n")
     print(print_style + f"{datetime.now().date()}\n")
     print(print_style + f"{datetime.now().time().strftime('%I:%M%p')}\n")
-    print(print_style + f"** Type the name of the command interpreter: COMMAND.COM **")
+    print(print_style + "** Type the name of the command interpreter: COMMAND.COM **")
     print('\n\n\n')
 
     func.hello()
@@ -56,8 +59,8 @@ def goodbye():
     Відображення фічі ФінальнаЗаставка
     '''
     print_style = Fore.GREEN + Back.BLACK + Style.BRIGHT
-    print(
-        print_style + "Good bye! I wish you to survive in this beautiful world! See you next time!\n")
+    print(print_style + "Good bye! I wish you to survive in this beautiful world!" +\
+                        " See you next time!\n")
     print(print_style + 'C:\> exit\n**C:\>**\nC:> shutdown /r /t 0')
 
     print(Style.RESET_ALL)  # відновлення кольорів терміналу
