@@ -10,7 +10,6 @@ def main():
 
     # ініціалізація
     book = AddressBook()
-    book.load()
     notes = NoteBook()
     notes.load()
     features.greeting()
@@ -38,12 +37,15 @@ def main():
 
         elif command == "add-man":
             func.add_man(args, book)
+            func.save_book(book)
 
         elif command == "del-man":
             func.del_man(args, book)
+            func.save_book(book)
 
         elif command == "cng-man":
             func.cng_man(args, book)
+            func.save_book(book)
 
         elif command == "show-man":
             func.show_man(args, book)
@@ -53,39 +55,49 @@ def main():
 
         elif command == "add-phone":
             func.add_phone(args, book)
+            func.save_book(book)
 
         elif command == "cng-phone":
             func.cng_phone(args, book)
+            func.save_book(book)
 
         elif command == "del-phone":
             func.del_phone(args, book)
+            func.save_book(book)
 
         elif command == "add-email":
             func.add_email(args, book)
+            func.save_book(book)
 
         elif command == "cng-email":
             func.cng_email(args, book)
+            func.save_book(book)
 
         elif command == "find-email":
             func.find_email(args, book)
 
         elif command == "del-email":
             func.del_email(args, book)
+            func.save_book(book)
 
         elif command == "add-bday":
             func.add_bday(args, book)
+            func.save_book(book)
 
         elif command == "del-bday":
             func.del_bday(args, book)
+            func.save_book(book)
 
         elif command == "show-bday":
             func.show_bday(args, book)
 
         elif command == "add-adr":
             func.add_adr(args, book)
+            func.save_book(book)
 
         elif command == "del-adr":
             func.del_adr(args, book)
+            func.save_book(book)
 
         elif command == "find-adr":
             func.find_adr(args, book)
