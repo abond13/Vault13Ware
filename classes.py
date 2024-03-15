@@ -95,7 +95,7 @@ class Phone(Field):
         +380(4565)7890001
     """
     def __init__(self, phone):
-        if not re.fullmatch(r'^(\+[1-9]{1,3})?(\(\d{1,4}\))?\d{6,15}$', phone):
+        if not re.fullmatch(r'^(\+[1-9]\d{,2})?(\(\d{1,4}\))?\d{6,15}$', phone):
             raise PhoneFormatError
         super().__init__(phone)
 
@@ -106,14 +106,12 @@ class Birthday(Field):
     Формат виводу: DD.MM.YYYY
     """
     def __init__(self, value):
-        super().__init__(value)
-        day, month, year = self.value.split('.')
-        self.day, self.month, self.year = int(day), int(month), int(year)
-
         try:
-            datetime.date(self.year, self.month, self.day)
-        except ValueError:
-            raise ValueError("Incorrect date format, should be DD.MM.YYYY")
+            datetime.datetime.strptime(value, '%d.%m.%Y')
+        except ValueError as exception:
+            raise BirthdayFormatError from exception
+        super().__init__(value)
+        self.day, self.month, self.year = map(int, self.value.split('.'))
 
     def __str__(self):
         return f"{datetime.datetime(self.year, self.month, self.day).strftime('%d %B, %Y')}"
@@ -195,15 +193,7 @@ class Record:
         return None
 
     def add_birthday(self, birthday):
-        # Quick naїve check of date format
-        if not re.fullmatch(r'\b(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.(19\d\d|20\d\d)\b', birthday):
-            raise BirthdayFormatError
-        day, month, year = birthday.split('.')
-        # Strong check by creating a date object
-        try:
-            self.birthday = Birthday(birthday)
-        except ValueError as exception:
-            raise BirthdayFormatError from exception
+        self.birthday = Birthday(birthday)
 
     def find_email(self, email):
         for email_field in self.emails:
@@ -220,9 +210,6 @@ class Record:
         MAX_ADDRESS_LENGTH = 250
         self.address = Address(new_address[:MAX_ADDRESS_LENGTH])
 
-    def add_bday(self, new_bday: str):
-        self.birthday = Birthday(datetime.datetime.strptime(new_bday, '%d.%m.%Y'))
-
 
     def __str__(self):
         return (f"Contact name: {self.name.value}, \n"
@@ -236,6 +223,10 @@ class AddressBook(UserDict):
     """
     Клас для зберігання адресної книги
     """
+    def __init__(self):
+        super().__init__()
+        self.filename = './.address_book.json'
+        self.load(self.filename)
 
     def find(self, name):
         return self.data.get(name, None)
@@ -248,20 +239,21 @@ class AddressBook(UserDict):
             return True
         return False
 
-    def load(self, filename='./.address_book.json'):
+    def load(self, filename=None):
         """
         Зчитування данних з JSON файлу і створення записів (Record)
         для данного екземпляру AddressBook.
         Зчитування відбувається в режимі обʼєднання, але у разі
         співпадіння імен записів, записи з JSON файлу мають перевагу
-        над вже існуючими записами в екземплярі AddressBook.
-
-        За замовчуванням зчитується файл ./.address_book.json 
+        над вже існуючими записами в екземплярі AddressBook. 
         """
+        if not filename:
+            filename = self.filename
         try:
             with open(filename, "r", encoding="utf-8") as book_file:
                 book_dict = json.load(book_file)
         except OSError:
+            # Файла з записами немає, тихо виходимо
             return
         except json.JSONDecodeError:
             print(f"Address book JSON file {filename} is broken.")
@@ -289,19 +281,26 @@ class AddressBook(UserDict):
                     AddressFormatError):
                 continue
 
-    def save(self, filename='./.address_book.json'):
+    def save(self, filename=None):
         """
         Зберігання всіх записів (Record) данного екземпляра AddressBook в JSON файл.
-        За замовчуванням JSON файл розташований в ./.address_book.json
         Додатково використовується проміжний TMP файл для запобігання
         втрати данних під час відкриття файла на запис, але без подальшого запису
         у випадку нештатної ситуації.
         """
+        if not filename:
+            filename = self.filename
         book_json = json.dumps(self.data, default=lambda o: o.__dict__, indent=4)
         with tempfile.NamedTemporaryFile('w', encoding="utf-8",
                 dir='.', prefix=filename+'~', delete=False) as tf:
             tf.write(book_json)
+        # Fix for Windows: os.rename can be executed when tf is closed
+        try:
+            if os.path.exists(filename):
+                os.remove(filename)
             os.rename(tf.name, filename)
+        except OSError as error:
+            print(error)
 
     def get_birthdays(self, quantity: int):
         """
@@ -313,8 +312,7 @@ class AddressBook(UserDict):
             у форматі:
             Monday: Bill Goots, Foo Bar
             Friday: John Smith
-        """
-        """
+
         Function recieves an AddressBook object and number of days to look ahead.\n
         Prints out birthdays of contacts within the range of days.
         Returns nothing.
