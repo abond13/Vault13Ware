@@ -265,11 +265,11 @@ def del_bday(args):
 
 
 @input_error
-def show_bday(args):
+def show_bday(args: tuple, book: AddressBook):
     '''
     Функція видалення дня народження
     '''
-    pass  # FIXME наповнити кодом #######################
+    quantity = args[0]
 
 
 @input_error
