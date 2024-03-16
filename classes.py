@@ -199,8 +199,7 @@ class Record:
                 self.emails.remove(email)
                 self.emails.append(Email(new_email))
                 return True
-            else:
-                return False
+        return False
         
     def delete_email(self, email_str):
         for email in self.emails:
