@@ -272,12 +272,13 @@ def cng_phone(args: tuple, book: AddressBook):
     else:
         raise NotFoundNameError
 
-#@input_error
+@input_error
 def del_phone(args: tuple, book: AddressBook):
     """
     Функція зміни номеру телефону.
     """
-    if len(args) < 2:
+    com_min_args_qty = 2  # name & the phone to delete
+    if len(args) < com_min_args_qty:
         raise MinArgsQuantityError
     
     name, phone = args
@@ -297,7 +298,7 @@ def add_email(args: tuple, book: AddressBook):
     '''
     Функція додавання email
     '''
-    com_min_args_qty = 2  # name & the first email
+    com_min_args_qty = 2    # name & the first email
     if len(args) < com_min_args_qty:
         raise MinArgsQuantityError
 
@@ -316,11 +317,12 @@ def add_email(args: tuple, book: AddressBook):
         raise NotFoundNameError
 
 
-#@input_error
+@input_error
 def cng_email(args: tuple, book: AddressBook):
     """
     Функція зміни пошти.
     """
+    com_min_args_qty = 3    # name + old email + new email
     if len(args) < 3:
         raise MinArgsQuantityError
     
