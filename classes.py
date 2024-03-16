@@ -166,6 +166,12 @@ class Record:
         self.emails = []
         self.address = None
         self.birthday = None
+    
+    def __str__(self):
+        return f"{self.name} Record"
+    
+    def __repr__(self):
+        return f"{self.name} Record"
 
     def add_phone(self, phone):
         # Додаємо лише унікальний телефон
@@ -183,8 +189,7 @@ class Record:
                 self.phones.remove(phone)
                 self.phones.append(Phone(new_phone))
                 return True
-            else:
-                return False
+        return False
 
     def delete_phone(self, phone_str):
         for phone in self.phones:
