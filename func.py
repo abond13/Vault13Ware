@@ -507,17 +507,30 @@ def del_adr(args: tuple, book: AddressBook):
 @input_error
 def find_adr(args: tuple, book: AddressBook):
     """
-    функція пошуку адреси.
+    Функція пошуку адреси.
+    Виводить на екран контакти, адреса яких містить в собі заданий підрядок
     """
     if len(args) < 1:
         raise MinArgsQuantityError
 
-    name = args[0]
-    found = book.find_address(name)
-    if found:
-        print(f"Address for {name}: {found}.")
-    else:
-        print("Address not found.")
+    substring = args[0]
+    print(f"\nContacts with '{substring}' in address:\n")
+    flag = 0
+
+    for name, record in book.items():
+        
+        # Якщо адреса не задана, то пропускаємо даний контакт
+        if record.address is None:
+            continue
+        
+        # Перевіряємо, чи адреса даного контакта містить в собі підрядок substring
+        if substring in record.address.value:
+            flag = 1
+            print(f"{name}: {record.address}")
+
+    if flag == 0:
+        print("Not found.\n")
+    else: print()               # just for design
 
 
 
