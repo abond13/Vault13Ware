@@ -540,7 +540,7 @@ def find_adr(args: tuple, book: AddressBook):
 
     if flag == 0:
         display("Not found.\n")
-    else: display()               # just for design
+    else: display('')               # just for design
 
 
 
