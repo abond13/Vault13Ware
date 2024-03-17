@@ -82,12 +82,11 @@ class Name(Field):
     Клас для зберігання імені контакту.
     Імʼя має задоволняти наступним вимогам:
             1. Довжина повинна бути 2+ символів.
-            2. Перша літера велика.
-                Наприклад: Al
+                Наприклад: Al, me, iA
     """
 
     def __init__(self, name):
-        if not re.fullmatch("[A-Z][a-z]+", name):
+        if not re.fullmatch("[A-Za-z]{2,}", name):
             raise NameFormatError
         super().__init__(name)
 
