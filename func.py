@@ -616,22 +616,23 @@ def show_note(args, notes: NoteBook):
     Функція виведення нотатки за її номером, або всіх одразу (якщо індекс не заданий)
     '''
     if len(args) == 0:
-        for note in notes:
-            print(note)
+        for index, note in notes.items():
+            print(f"{index}: {note.short_str()}")                 # change to display
         # raise NoIdEnteredError()
         pass
-    id_to_find = int(args[0])
-    note = notes.find_note_by_id(id_to_find)
-    if note:                                        # в ідеалі треба створити метод, який би повертав рядок для виводу на display (аналог __str__ для print)
-        result = ""
-        if note.title:
-            result += f"Title: <<{note.title}>>\n"
-        result += f"Body: {note.body}"
-        if len(note.tags) > 0:
-            result += f'\nTags: {", ".join(note.tags)}'
-        display(result)
     else:
-        raise NoIdFoundError()
+        id_to_find = int(args[0])
+        note = notes.find_note_by_id(id_to_find)
+        if note:                                        # в ідеалі треба створити метод, який би повертав рядок для виводу на display (аналог __str__ для print)
+            result = ""
+            if note.title:
+                result += f"Title: <<{note.title}>>\n"
+            result += f"Body: {note.body}"
+            if len(note.tags) > 0:
+                result += f'\nTags: {", ".join(note.tags)}'
+            display(result)
+        else:
+            raise NoIdFoundError()
 
 
 @input_error
