@@ -210,12 +210,14 @@ def show_man(args: tuple, book: AddressBook):
 
         print('\nContact profiles:')
         print('----------------')
+        records_left = len(book.data)
 
         counter = 1  # стартове значення лічильника
         for record in book.data.values():
+            records_left -= 1
             print(record)
             print('----------------')
-            if counter >= PAGE_SIZE:
+            if counter >= PAGE_SIZE and records_left > 0:
                 if os_type == "Windows":
                     print('\n                                           ',
                           '--- Press any key to continue ---            ',
