@@ -621,11 +621,11 @@ def show_note(args, notes: NoteBook):
     note = notes.find_note_by_id(id_to_find)
     if note: # в ідеалі треба створити метод, який би повертав рядок для виводу на display (аналог __str__ для print)
         result = ""
-        if self.title:
-            result += f"Title: <<{self.title}>>\n"
-        result += f"Body: {self.body}"
-        if len(self.tags) > 0:
-            result += f'\nTags: {", ".join(self.tags)}'
+        if note.title:
+            result += f"Title: <<{note.title}>>\n"
+        result += f"Body: {note.body}"
+        if len(note.tags) > 0:
+            result += f'\nTags: {", ".join(note.tags)}'
         display(result)
     else:
         raise NoIdFoundError()
