@@ -300,6 +300,13 @@ class Record:
         self.address = Address(new_address[:MAX_ADDRESS_LENGTH])
 
     def __str__(self):
+        # return_str = ''
+        # return_str += f"Contact name: {self.name.value}, \n"
+        # return_str += f"    birthday: {self.birthday}, \n"
+        # return_str += f"      phones: {'; '.join(p.value for p in self.phones)}, \n"
+        # return_str += f"      emails: {'; '.join(e.value for e in self.emails)}, \n"
+        # return_str += f"     address: {self.address}\n"
+        # return return_str
         return (f"Contact name: {self.name.value}, \n"
                 f"    birthday: {self.birthday}, \n"
                 f"      phones: {'; '.join(p.value for p in self.phones)}, \n"
