@@ -417,6 +417,10 @@ class AddressBook(UserDict):  # object = { Name(name): Record(Name(name), ...) }
         Returns nothing.
         """
 
+        if quantity > 365:
+            display("Are you sure you will live more than a year? Try to write some real number instead.")
+            return
+
         calendar = {}
         today = datetime.datetime.today().date()
 
