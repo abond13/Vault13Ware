@@ -106,7 +106,7 @@ by VaultTec Corporation</span>
 
 ## <span style="color:green">Wault13Ware Team:
 - <span style="color:green">Andriy
-- <span style="color:green">Bogdan
+- <span style="color:green">Bohdan
 - <span style="color:green">Danylo
 - <span style="color:green">Vladyslav
 - <span style="color:green">Vitalii
