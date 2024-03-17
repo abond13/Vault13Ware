@@ -173,17 +173,22 @@ def cng_man(args: tuple, book: AddressBook):
 @input_error
 def find_man(args: tuple, book: AddressBook):
     """
-    Функція пошуку контакту
+    Функція пошуку контактів за підрядком
+    Виводить імена, які мають в собі заданий підрядок тексту
     """
     if len(args) < 1:
         raise MinArgsQuantityError
     
-    name = args[0]
-    record = book.find(name)
-    if record:
-        print(record)
-    else:
-        print("Contact not found.")
+    substring = args[0]
+    print(f"\nContacts with '{substring}' in name:\n")
+    flag = 0
+
+    for name in book.keys():
+        if substring.lower() in name.lower():
+            flag = 1
+            print(name)
+    if flag == 0:
+        print("Not found.")
 
 @input_error
 def show_man(args: tuple, book: AddressBook):
