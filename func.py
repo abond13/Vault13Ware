@@ -171,7 +171,7 @@ def cng_man(args: tuple, book: AddressBook):
         display(f"Contact name changed from {old_name} to {new_name}.")
     else:
         raise NotFoundNameError
-    
+
 @input_error
 def find_man(args: tuple, book: AddressBook):
     """
@@ -355,7 +355,6 @@ def cng_email(args: tuple, book: AddressBook):
         raise NotFoundNameError
 
 
-
 @input_error
 def find_email(args: tuple, book: AddressBook):
     """
@@ -363,13 +362,14 @@ def find_email(args: tuple, book: AddressBook):
     """
     if len(args) < 1:
         raise MinArgsQuantityError
-    
+
     name = args[0]
     found = book.find_email(name)
     if found:
         display(f"Contact {name} has email:")
         for record in found:
-            display(record)
+            print_string = f"emails: {'; '.join(e.value for e in record.emails)}, \n"
+            display(print_string)
     else:
         display("Email not found.")
 
@@ -541,7 +541,6 @@ def find_adr(args: tuple, book: AddressBook):
     if flag == 0:
         display("Not found.\n")
     else: display('')               # just for design
-
 
 
 @input_error
