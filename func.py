@@ -73,7 +73,7 @@ def hello():
     '''
     Друк сторінки з привітанням. Відображаємо на старті. А також по команді hello.
     '''
-    print("\x1b[2J")  # clean the screen
+    # print("\x1b[2J")  # clean the screen
     display('Hail to you, representative of the remnants of humanity, bag of bones!\n')
 
     try:
