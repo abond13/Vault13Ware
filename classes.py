@@ -5,6 +5,7 @@ from collections import defaultdict
 import json
 import tempfile
 import os
+from features import display
 
 
 # Exceptions
@@ -74,7 +75,6 @@ class Field:
     
     def __repr__(self):
         return str(self.value)
-
 
 
 class Name(Field):
@@ -300,6 +300,13 @@ class Record:
         self.address = Address(new_address[:MAX_ADDRESS_LENGTH])
 
     def __str__(self):
+        # return_str = ''
+        # return_str += f"Contact name: {self.name.value}, \n"
+        # return_str += f"    birthday: {self.birthday}, \n"
+        # return_str += f"      phones: {'; '.join(p.value for p in self.phones)}, \n"
+        # return_str += f"      emails: {'; '.join(e.value for e in self.emails)}, \n"
+        # return_str += f"     address: {self.address}\n"
+        # return return_str
         return (f"Contact name: {self.name.value}, \n"
                 f"    birthday: {self.birthday}, \n"
                 f"      phones: {'; '.join(p.value for p in self.phones)}, \n"
@@ -322,11 +329,11 @@ class AddressBook(UserDict):  # object = { Name(name): Record(Name(name), ...) }
 
     def add_record(self, record: Record):
         self.data[record.name.value] = record
-        
+
     def change_record(self, old_name: str, new_name: str):
         self.data[new_name] = self.data.pop(old_name)
         self.data[new_name].name = Name(new_name)
-        
+
     def delete(self, name):
         if self.data.pop(name, None):
             return True
@@ -460,9 +467,13 @@ class AddressBook(UserDict):  # object = { Name(name): Record(Name(name), ...) }
         for key_outer, inner_dict in calendar.items():
             inner_dict = DictSortable(inner_dict)
             inner_dict = inner_dict.sort_keys()
-            print(key_outer.strftime("%B, %Y"))
+            print_string = str(key_outer.strftime("%B, %Y"))
+            display(print_string)
             for key_inner, name_list in inner_dict.items():
-                print(f"{key_inner}: {', '.join([name.value for name in name_list])}")
+                print_string2 = (
+                    f"{key_inner}: " + f"{', '.join([name.value for name in name_list])}"
+                )
+                display(print_string2)
             print()
 
     def change_phone(self, new_phone):
@@ -508,7 +519,7 @@ class AddressBook(UserDict):  # object = { Name(name): Record(Name(name), ...) }
             self.address = None
             return True
         return False
-    
+
     def find_phone(self, name:str):
         if self.data.get(name):
             return self.data[name].phones

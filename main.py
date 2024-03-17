@@ -1,6 +1,7 @@
+from features import display, greeting, goodbye  # модуль з фічами
 from classes import AddressBook, NoteBook  # модуль з класами
 import func  # модуль з функціями виконання команд боту
-import features  # модуль з фічами
+
 
 
 def main():
@@ -11,7 +12,8 @@ def main():
     # ініціалізація
     book = AddressBook()
     notes = NoteBook()
-    features.greeting()
+    greeting()
+    func.hello()
 
     # work cycle
     while True:
@@ -25,7 +27,7 @@ def main():
 
         # handling
         if command in ("close", "exit", "quit"):
-            features.goodbye()
+            goodbye()
             break
 
         elif command == "help":
@@ -122,7 +124,7 @@ def main():
             func.show_sorted_tags(notes)
 
         else:
-            print("Invalid command. Type 'help' for get a list of commands.")
+            display("Invalid command. Type 'help' for get a list of commands.")
 
 
 if __name__ == "__main__":
