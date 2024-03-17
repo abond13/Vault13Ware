@@ -29,7 +29,7 @@ def input_error(func):
         except PhoneFormatError:
             display("Wrong phone format.")
         except BirthdayFormatError:
-            display("Wrong birthday format.")
+            display("Wrong birthday format. Use DD.MM.YYYY.")
         except EmailFormatError:
             display("Wrong email format.")
         except AddressFormatError:

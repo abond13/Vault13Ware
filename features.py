@@ -8,7 +8,7 @@ if platform.system() == "Windows":
     import winsound
 
 
-def display(today_style_string: str):
+def display(today_style_string: str, end='\n'):
     '''
     old-computer-style printing function
     '''
@@ -24,16 +24,29 @@ def display(today_style_string: str):
             time.sleep(0.001)
         else:
             time.sleep(0.005)
-    print('')
+    print(end, end='')
 
 def greeting():
     '''
     Відображення фічі СтартоваЗаставка
     '''
-    print(Fore.GREEN + Back.BLACK + Style.BRIGHT)
-    display("\033[40m")  # чорний колір в терміналі
-    display("\x1b[2J")  # clean the screen
+    print(Fore.GREEN + Back.BLACK + Style.BRIGHT, end='')
+    display("\033[40m", end='')  # чорний колір в терміналі
+    display("\x1b[2J", end='')  # clean the screen
 
+    while True:
+        display("Do you want to see Welcome Screen?")
+        display("Type yes or no: ", end='')
+        answer = input()
+        
+        if answer in ['yes', 'y']: break
+        elif answer in ['no', 'n']:
+            print()
+            return
+        else:
+            print()
+            continue
+        
     with open('splash_screen.txt', 'r') as file:
         display(file.read())
 
