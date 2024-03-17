@@ -112,7 +112,7 @@ def hello():
               f" {weather['weather'][0]['description']}\n")
         display(f"The WaultTecBank gave now next exchange rate"
               f" for North American money papers: {dollar_buy_rate}/{dollar_sell_rate},"
-              f" for Europa money papers: {euro_buy_rate}/{euro_sell_rate}\n")
+              f" for European money papers: {euro_buy_rate}/{euro_sell_rate}\n")
 
     except requests.ConnectionError:  # when the server requests answer is not status '200'
         display('Сommunication satellite disabled by radiation emission.' +
@@ -619,8 +619,14 @@ def show_note(args, notes: NoteBook):
         raise NoIdEnteredError()
     id_to_find = int(args[0])
     note = notes.find_note_by_id(id_to_find)
-    if note:
-        display(note)
+    if note: # в ідеалі треба створити метод, який би повертав рядок для виводу на display (аналог __str__ для print)
+        result = ""
+        if self.title:
+            result += f"Title: <<{self.title}>>\n"
+        result += f"Body: {self.body}"
+        if len(self.tags) > 0:
+            result += f'\nTags: {", ".join(self.tags)}'
+        display(result)
     else:
         raise NoIdFoundError()
 
