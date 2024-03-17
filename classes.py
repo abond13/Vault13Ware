@@ -300,13 +300,6 @@ class Record:
         self.address = Address(new_address[:MAX_ADDRESS_LENGTH])
 
     def __str__(self):
-        # return_str = ''
-        # return_str += f"Contact name: {self.name.value}, \n"
-        # return_str += f"    birthday: {self.birthday}, \n"
-        # return_str += f"      phones: {'; '.join(p.value for p in self.phones)}, \n"
-        # return_str += f"      emails: {'; '.join(e.value for e in self.emails)}, \n"
-        # return_str += f"     address: {self.address}\n"
-        # return return_str
         return (f"Contact name: {self.name.value}, \n"
                 f"    birthday: {self.birthday}, \n"
                 f"      phones: {'; '.join(p.value for p in self.phones)}, \n"
@@ -578,7 +571,7 @@ class Note(Field):
     def __str__(self):
         result = ""
         if self.title:
-            result += f'Title: <<{self.title}>>\n'
+            result += f'Title: {self.title}\n'              # deleted << >> in title printing
         result += f'Body: {self.body}'
         if len(self.tags) > 0:
             result += f'\nTags: {", ".join(self.tags)}'
@@ -587,10 +580,10 @@ class Note(Field):
     def short_str(self):
         if self.title:
             return self.title
-        elif len(self.body) < 10:
+        elif len(self.body) < 30:
             return self.body
         else:
-            return f"{self.body[:10]}..."
+            return f"{self.body[:30]}..."
 
 
 class NoteBook(UserDict):

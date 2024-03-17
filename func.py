@@ -340,7 +340,7 @@ def cng_email(args: tuple, book: AddressBook):
     Функція зміни пошти.
     """
     com_min_args_qty = 3    # name + old email + new email
-    if len(args) < 3:
+    if len(args) < com_min_args_qty:
         raise MinArgsQuantityError
     
     name, old_email, new_email = args
@@ -613,13 +613,16 @@ def find_note(args, notes: NoteBook):
 @input_error
 def show_note(args, notes: NoteBook):
     '''
-    Функція виведення нотатки за її номером
+    Функція виведення нотатки за її номером, або всіх одразу (якщо індекс не заданий)
     '''
     if len(args) == 0:
-        raise NoIdEnteredError()
+        for note in notes:
+            print(note)
+        # raise NoIdEnteredError()
+        pass
     id_to_find = int(args[0])
     note = notes.find_note_by_id(id_to_find)
-    if note: # в ідеалі треба створити метод, який би повертав рядок для виводу на display (аналог __str__ для print)
+    if note:                                        # в ідеалі треба створити метод, який би повертав рядок для виводу на display (аналог __str__ для print)
         result = ""
         if note.title:
             result += f"Title: <<{note.title}>>\n"
