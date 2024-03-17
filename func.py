@@ -115,7 +115,7 @@ def hello():
               f" for Europa money papers: {euro_buy_rate}/{euro_sell_rate}\n")
 
     except requests.ConnectionError:  # when the server requests answer is not status '200'
-        display('Сommunication satellite disabled by radiation emission.',
+        display('Сommunication satellite disabled by radiation emission.' +
               ' Displaying your location and weather is temporarily unavailable.\n')
 
     finally:
@@ -234,8 +234,8 @@ def show_man(args: tuple, book: AddressBook):
             display('----------------')
             if counter >= PAGE_SIZE and records_left > 0:
                 if os_type == "Windows":
-                    display('\n                                           ',
-                          '--- Press any key to continue ---            ',
+                    display('\n                                           '+
+                          '--- Press any key to continue ---            '+
                           '                                \n')
                     msvcrt.getch()  # очікування натискання будь-якої клавіши
                 else:  #  очікування натискання клавіши (for Mac&Linux)

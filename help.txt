@@ -5,8 +5,8 @@ hello                                         : show date, time, location, weath
 add-man	<name>	                              : add contact with <name> name
 del-man	<name>	                              : delete contact with <name> name
 cng-man	<old-name> <new-name>                 : change contact name from <old-name> to <new-name>
-show-man [<name>]		                      : show all contacts data, with <name> show contact data of <name> only
-find-man <search_string>	                  : find all contacts with <search_string> in name
+show-man [<name>]                             : show all contacts data, with <name> show contact data of <name> only
+find-man <search_string>                      : find all contacts with <search_string> in name
 add-phone <name> <phone1> [<phone2>]          : add phone number <phone1> for contact <name>, can add some numbers
 cng-phone <name> <old-phone> <new-phone>      : change phone number from <old-phone> to <new-phone> for contact <name>
 del-phone <name> <phone>                      : delete phone number <phone> for contact <name>
