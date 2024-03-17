@@ -358,20 +358,27 @@ def cng_email(args: tuple, book: AddressBook):
 @input_error
 def find_email(args: tuple, book: AddressBook):
     """
-    Функція пошуку пошти.
+    Функція пошуку пошти за підрядком.
+    Виводить список електроних пошт, які мають в собі заданий підрядок
     """
     if len(args) < 1:
         raise MinArgsQuantityError
 
-    name = args[0]
-    found = book.find_email(name)
-    if found:
-        display(f"Contact {name} has email:")
-        for record in found:
-            print_string = f"emails: {'; '.join(e.value for e in record.emails)}, \n"
-            display(print_string)
-    else:
-        display("Email not found.")
+    substring = args[0]
+    display(f"\nContacts with '{substring}' in email:\n")
+    flag = 0
+
+    for name, record in book.items():
+
+        # Перевіряємо, чи є у даного контакта хоча б одна пошта, яка містить в собі підрядок substring
+        if len(list(filter(lambda email: substring in email.value, record.emails))):
+            flag = 1
+            display(f"{name}:")
+            for email in filter(lambda email: substring in email.value, record.emails):
+                display(email.value)
+            print()
+    if flag == 0:
+        display("Not found.\n")
 
 
 @input_error
