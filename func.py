@@ -622,8 +622,6 @@ def show_note(args, notes: NoteBook):
     Функція виведення нотатки за її номером, або всіх одразу (якщо індекс не заданий)
     '''
     
-    print(f"Current NoteBook.id: {NoteBook.id}")
-
     if len(args) == 0:
         for index, note in notes.items():
             display(f"{index}: {note.short_str()}")
