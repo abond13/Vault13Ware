@@ -547,6 +547,7 @@ class Note(Field):
         self.title = ""
         self.body = ""
         self.tags = []
+        self.id = None
         self.__extract_title_and_body()
         self.__extract_tags()
 

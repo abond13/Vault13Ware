@@ -588,8 +588,14 @@ def del_note(args, notes: NoteBook):
     if len(args) == 0:
         raise NoIdEnteredError()
     id_to_delete = int(args[0])
-    if notes.delete(id_to_delete):
+    
+    if id_to_delete in range(len(notes)):
+        for index in range(id_to_delete, len(notes) - 1):
+            notes[index] = notes[index+1]
+        notes.pop(len(notes)-1)
+        NoteBook.id -= 1
         display("Note deleted")
+        print(f"Left {len(notes)} notes")
     else:
         raise NoIdFoundError()
 
@@ -615,10 +621,12 @@ def show_note(args, notes: NoteBook):
     '''
     Функція виведення нотатки за її номером, або всіх одразу (якщо індекс не заданий)
     '''
+    
+    print(f"Current NoteBook.id: {NoteBook.id}")
+
     if len(args) == 0:
         for index, note in notes.items():
-            print(f"{index}: {note.short_str()}")                 # change to display
-        # raise NoIdEnteredError()
+            display(f"{index}: {note.short_str()}")
         pass
     else:
         id_to_find = int(args[0])
@@ -626,7 +634,7 @@ def show_note(args, notes: NoteBook):
         if note:                                        # в ідеалі треба створити метод, який би повертав рядок для виводу на display (аналог __str__ для print)
             result = ""
             if note.title:
-                result += f"Title: <<{note.title}>>\n"
+                result += f"Title: {note.title}\n"
             result += f"Body: {note.body}"
             if len(note.tags) > 0:
                 result += f'\nTags: {", ".join(note.tags)}'
