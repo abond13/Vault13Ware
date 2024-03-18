@@ -5,7 +5,7 @@ from collections import defaultdict
 import json
 import tempfile
 import os
-from features import display
+from pip_boy_bot_3000.features import display
 
 
 # Exceptions

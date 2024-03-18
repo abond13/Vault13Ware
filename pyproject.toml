@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pip_boy_bot_3000"
+version = "0.0.1"
+description = "Personal Information Processor PIP-Boy-Bot-3000"
+authors = [{name = "Vault13Ware", email = "Vault13Ware@example.com"}]
+maintainers = [{name = "Vault13Ware", email = "Vault13Ware@example.com"}]
+readme = "README.md"
+requires-python = ">= 3.9"
+dependencies = ["requests",
+                "colorama",
+                "msvcrt; os_name == 'nt'",
+                "winsound; os_name == 'nt'",]
+
+[project.scripts]
+pip_boy_bot_3000 = "pip_boy_bot_3000.main:main"
+
+[tool.setuptools]
+package-data = {"pip_boy_bot_3000" = ["*.txt"]}
