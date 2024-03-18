@@ -1,8 +1,9 @@
-from features import display
+from pip_boy_bot_3000.features import display
 from datetime import datetime
+import os
 import platform
 import requests # API-для запитів
-from classes import BirthdayFormatError, EmailFormatError, AddressFormatError,\
+from pip_boy_bot_3000.classes import BirthdayFormatError, EmailFormatError, AddressFormatError,\
                     NameFormatError, PhoneFormatError, NoTextError,\
                     NoIdEnteredError, NoIdFoundError, MinArgsQuantityError, NotFoundNameError,\
                     Record, AddressBook, NoteBook, Note
@@ -63,7 +64,8 @@ def help_doc():
     Друк сторінки з синтаксисом команд
     help_doc - в файлі help.txt
     '''
-    with open('help.txt', 'r') as file:
+    path = os.path.realpath(__file__)
+    with open(f'{os.path.dirname(path)}/help.txt', 'r') as file:
         print("\x1b[2J")  # clean the screen
         display(file.read())
         print('\n')

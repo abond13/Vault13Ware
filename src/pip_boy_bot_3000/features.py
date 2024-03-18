@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 import time
 import platform
 from colorama import Fore, Back, Style
@@ -38,7 +39,7 @@ def greeting():
         display("Do you want to see Welcome Screen?")
         display("Type yes or no: ", end='')
         answer = input()
-        
+
         if answer in ['yes', 'y']: break
         elif answer in ['no', 'n']:
             print()
@@ -46,8 +47,9 @@ def greeting():
         else:
             print()
             continue
-        
-    with open('splash_screen.txt', 'r') as file:
+
+    path = os.path.realpath(__file__)
+    with open(f'{os.path.dirname(path)}/splash_screen.txt', 'r') as file:
         display(file.read())
 
     print('\n\n\n')
