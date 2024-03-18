@@ -558,12 +558,12 @@ def save_book(book):
     book.save()
 
 
-@input_error
-def save_book(book):
-    '''
-    Виклик зберігання адресної книги у файл
-    '''
-    book.save()
+# @input_error
+# def save_book(book):
+#     '''
+#     Виклик зберігання адресної книги у файл
+#     '''
+#     book.save()
 
 
 @input_error

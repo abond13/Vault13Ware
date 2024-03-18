@@ -3,7 +3,6 @@ from classes import AddressBook, NoteBook  # модуль з класами
 import func  # модуль з функціями виконання команд боту
 
 
-
 def main():
     '''
      Main function
@@ -14,6 +13,7 @@ def main():
     notes = NoteBook()
     greeting()
     func.hello()
+    func.show_bday((1,), book)
 
     # work cycle
     while True:
@@ -35,6 +35,7 @@ def main():
 
         elif command == "hello":
             func.hello()
+            func.show_bday((1,), book)
 
         elif command == "add-man":
             func.add_man(args, book)
