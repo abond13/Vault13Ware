@@ -73,7 +73,6 @@ def hello():
     '''
     Друк сторінки з привітанням. Відображаємо на старті. А також по команді hello.
     '''
-    # print("\x1b[2J")  # clean the screen
     display('Hail to you, representative of the remnants of humanity, bag of bones!\n')
 
     try:
@@ -95,7 +94,6 @@ def hello():
             if line['currencyCodeA'] == 978 and line['currencyCodeB'] == 980:
                 euro_buy_rate = line['rateBuy']
                 euro_sell_rate = line['rateSell']
-        # raise ValueError # for imitation of getting the server request answer 'not status '200''
         display(f"Now is {datetime.now().strftime('%a %d %b %Y, %I:%M%p')}."
               f" The best day for fighting for existence!\n")
         display(f"You are near the place marked on old maps as city:"
@@ -311,7 +309,7 @@ def del_phone(args: tuple, book: AddressBook):
 
 
 @input_error
-def add_email(args: tuple, book: AddressBook):
+def add_email(args: tuple, book: AddressBook):#
     '''
     Функція додавання email
     '''
@@ -340,7 +338,7 @@ def cng_email(args: tuple, book: AddressBook):
     Функція зміни пошти.
     """
     com_min_args_qty = 3    # name + old email + new email
-    if len(args) < 3:
+    if len(args) < com_min_args_qty:
         raise MinArgsQuantityError
     
     name, old_email, new_email = args
@@ -421,26 +419,6 @@ def add_bday(args: tuple, book: AddressBook):
         else:
             record.add_birthday(new_bday)
             display(f"Email {new_bday} is updated as birthday to {name}.\n")
-    else:
-        raise NotFoundNameError
-
-
-@input_error
-def cng_bday(args: tuple, book: AddressBook):
-    """
-    Функція зміни дня народження.
-    """
-    if len(args) < 2:
-        raise MinArgsQuantityError
-    
-    name, new_bday = args
-    record = book.find(name)
-    if record:
-        success = record.change_birthday(new_bday)
-        if success:
-            display(f"Birthday updated to {new_bday} for {name}.")
-        else:
-            display("Error updating birthday.")
     else:
         raise NotFoundNameError
 
@@ -558,14 +536,6 @@ def save_book(book):
     book.save()
 
 
-# @input_error
-# def save_book(book):
-#     '''
-#     Виклик зберігання адресної книги у файл
-#     '''
-#     book.save()
-
-
 @input_error
 def add_note(args, notes: NoteBook):
     '''
@@ -588,8 +558,14 @@ def del_note(args, notes: NoteBook):
     if len(args) == 0:
         raise NoIdEnteredError()
     id_to_delete = int(args[0])
-    if notes.delete(id_to_delete):
+    
+    if id_to_delete in range(len(notes)):
+        for index in range(id_to_delete, len(notes) - 1):
+            notes[index] = notes[index+1]
+        notes.pop(len(notes)-1)
+        NoteBook.id -= 1
         display("Note deleted")
+        print(f"Left {len(notes)} notes")
     else:
         raise NoIdFoundError()
 
@@ -613,22 +589,26 @@ def find_note(args, notes: NoteBook):
 @input_error
 def show_note(args, notes: NoteBook):
     '''
-    Функція виведення нотатки за її номером
+    Функція виведення нотатки за її номером, або всіх одразу (якщо індекс не заданий)
     '''
+    
     if len(args) == 0:
-        raise NoIdEnteredError()
-    id_to_find = int(args[0])
-    note = notes.find_note_by_id(id_to_find)
-    if note: # в ідеалі треба створити метод, який би повертав рядок для виводу на display (аналог __str__ для print)
-        result = ""
-        if note.title:
-            result += f"Title: <<{note.title}>>\n"
-        result += f"Body: {note.body}"
-        if len(note.tags) > 0:
-            result += f'\nTags: {", ".join(note.tags)}'
-        display(result)
+        for index, note in notes.items():
+            display(f"{index}: {note.short_str()}")
+        pass
     else:
-        raise NoIdFoundError()
+        id_to_find = int(args[0])
+        note = notes.find_note_by_id(id_to_find)
+        if note:                                        # в ідеалі треба створити метод, який би повертав рядок для виводу на display (аналог __str__ для print)
+            result = ""
+            if note.title:
+                result += f"Title: {note.title}\n"
+            result += f"Body: {note.body}"
+            if len(note.tags) > 0:
+                result += f'\nTags: {", ".join(note.tags)}'
+            display(result)
+        else:
+            raise NoIdFoundError()
 
 
 @input_error
