@@ -436,6 +436,7 @@ class Note(Field):
         self.title = ""
         self.body = ""
         self.tags = []
+        self.id = None
         self.__extract_title_and_body()
         self.__extract_tags()
 
@@ -463,7 +464,7 @@ class Note(Field):
     def __str__(self):
         result = ""
         if self.title:
-            result += f'Title: <<{self.title}>>\n'
+            result += f'Title: {self.title}\n'              # deleted << >> in title printing
         result += f'Body: {self.body}'
         if len(self.tags) > 0:
             result += f'\nTags: {", ".join(self.tags)}'
@@ -472,10 +473,10 @@ class Note(Field):
     def short_str(self):
         if self.title:
             return self.title
-        elif len(self.body) < 10:
+        elif len(self.body) < 30:
             return self.body
         else:
-            return f"{self.body[:10]}..."
+            return f"{self.body[:30]}..."
 
 
 class NoteBook(UserDict):
